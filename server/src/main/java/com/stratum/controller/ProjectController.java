@@ -7,6 +7,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -19,6 +20,7 @@ import com.stratum.service.ProjectService;
 
 @RestController
 @RequestMapping("/project")
+@CrossOrigin(origins = "http://localhost:4200")
 public class ProjectController {
 
 	@Autowired
@@ -34,7 +36,7 @@ public class ProjectController {
 	}
 	
     @RequestMapping(value = "/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Project> getUser(@PathVariable("id") long id) {
+    public ResponseEntity<Project> getProject(@PathVariable("id") long id) {
         Project project = projectService.getProjectById(id);
         if (project == null) {
             return new ResponseEntity<Project>(HttpStatus.NOT_FOUND);
@@ -43,7 +45,7 @@ public class ProjectController {
     }
 	
 	@RequestMapping(method = RequestMethod.POST)
-    public ResponseEntity<Void> createUser(@RequestBody Project project, UriComponentsBuilder ucBuilder) { 
+    public ResponseEntity<Void> createProject(@RequestBody Project project, UriComponentsBuilder ucBuilder) { 
      /*   if (projectService.isProjectExistent(project)) {
             return new ResponseEntity<Void>(HttpStatus.CONFLICT);
         }*/
