@@ -10,9 +10,23 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ProjectEditComponent } from './project-edit/project-edit.component';
 import { FormsModule } from '@angular/forms';
 import { RouterModule, Routes } from '@angular/router';
+import { OktaCallbackComponent, OktaAuthModule } from '@okta/okta-angular';
+import { HTTP_INTERCEPTORS } from '@angular/common/http';
+import { AuthInterceptor } from './shared/okta/auth.interceptor';
+import { HomeComponent } from './home/home.component';
+
+const config = {
+  issuer: 'https://dev-531715.oktapreview.com/oauth2/default',
+  redirectUri: 'http://localhost:4200/implicit/callback',
+  clientId: '0oaet8g4w9f6C2JLb0h7'
+};
 
 const appRoutes: Routes = [
-  { path: '', redirectTo: '/project-list', pathMatch: 'full' },
+  {path: '', redirectTo: '/home', pathMatch: 'full'},
+  {
+    path: 'home',
+    component: HomeComponent
+  },
   {
     path: 'project-list',
     component: ProjectListComponent
@@ -24,14 +38,19 @@ const appRoutes: Routes = [
   {
     path: 'project-edit/:id',
     component: ProjectEditComponent
-  }
+  },
+  {
+    path: 'implicit/callback',
+    component: OktaCallbackComponent
+  },
 ];
 
 @NgModule({
   declarations: [
     AppComponent,
     ProjectListComponent,
-    ProjectEditComponent
+    ProjectEditComponent,
+    HomeComponent
   ],
   imports: [
     BrowserModule,
@@ -43,9 +62,10 @@ const appRoutes: Routes = [
     MatListModule,
     MatToolbarModule,
     FormsModule,
-    RouterModule.forRoot(appRoutes)
+    RouterModule.forRoot(appRoutes),
+	OktaAuthModule.initAuth(config)
   ],
-  providers: [ProjectService, GiphyService],
+  providers: [ProjectService, GiphyService, {provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true}],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

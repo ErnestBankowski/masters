@@ -7,6 +7,8 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.oauth2.provider.OAuth2Authentication;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -45,7 +47,7 @@ public class ProjectController {
     }
 	
 	@RequestMapping(method = RequestMethod.POST)
-    public ResponseEntity<Void> createProject(@RequestBody Project project, UriComponentsBuilder ucBuilder) { 
+    public ResponseEntity<Void> createProject(OAuth2Authentication auth, @RequestBody Project project, UriComponentsBuilder ucBuilder) { 
      /*   if (projectService.isProjectExistent(project)) {
             return new ResponseEntity<Void>(HttpStatus.CONFLICT);
         }*/

@@ -1,6 +1,10 @@
 
 <mat-toolbar color="primary">
   <span>Stratum</span>
+  <span class="toolbar-spacer"></span>
+  <button mat-raised-button color="accent" *ngIf="isAuthenticated"
+          (click)="oktaAuth.logout()" [routerLink]="['/home']">Logout
+  </button>
 </mat-toolbar>
 
 <router-outlet></router-outlet>
