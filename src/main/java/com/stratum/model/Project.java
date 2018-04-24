@@ -5,6 +5,9 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 @Entity
@@ -16,8 +19,9 @@ public class Project {
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private long id;
 	
-	@Column(name="project_owner_id")
-	private long projectOwnerId;
+	@ManyToOne
+	@JoinColumn(name="project_owner")
+	private User projectOwner;
 	
 	@Column(name="project_start")
 	private long projectStartTime;
@@ -37,12 +41,12 @@ public class Project {
 		this.id = id;
 	}
 
-	public long getProjectOwnerId() {
-		return projectOwnerId;
+	public User getProjectOwnerId() {
+		return projectOwner;
 	}
 
-	public void setProjectOwnerId(long projectOwnerId) {
-		this.projectOwnerId = projectOwnerId;
+	public void setProjectOwnerId(User projectOwner) {
+		this.projectOwner = projectOwner;
 	}
 
 	public long getProjectStartTime() {
@@ -72,7 +76,7 @@ public class Project {
 	@Override
 	public String toString() {
 		return "USER [id = "+id+"] "
-		+ "[projectOwnerId = "+projectOwnerId+"] "
+		+ "[projectOwnerId = "+projectOwner.getId()+"] "
 		+ "[projectStartTime = "+projectStartTime+"] "
 		+ "[projectEndTime = "+projectEndTime+"] "
 		+ "[projectName = "+projectName+"]";
