@@ -1,6 +1,7 @@
 package com.stratum.controller;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
@@ -30,7 +31,8 @@ public class ProjectController {
 	
 	@RequestMapping(method = RequestMethod.GET)
 	public ResponseEntity<List<Project>> listProjects() {
-		List<Project> projects = projectService.listProjects();
+		System.out.println("a projekty działają...");
+		List<Project> projects = projectService.list();
 	       if(projects.isEmpty()){
 	            return new ResponseEntity<List<Project> >(HttpStatus.NO_CONTENT);
 	        }
@@ -39,11 +41,11 @@ public class ProjectController {
 	
     @RequestMapping(value = "/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Project> getProject(@PathVariable("id") long id) {
-        Project project = projectService.getProjectById(id);
-        if (project == null) {
-            return new ResponseEntity<Project>(HttpStatus.NOT_FOUND);
+        Optional<Project> maybeProject = projectService.getOne(id);
+        if (maybeProject.isPresent()) {
+        	return new ResponseEntity<Project>(maybeProject.get(), HttpStatus.OK);         
         }
-        return new ResponseEntity<Project>(project, HttpStatus.OK);
+        return new ResponseEntity<Project>(HttpStatus.NOT_FOUND);
     }
 	
 	@RequestMapping(method = RequestMethod.POST)
@@ -51,7 +53,7 @@ public class ProjectController {
      /*   if (projectService.isProjectExistent(project)) {
             return new ResponseEntity<Void>(HttpStatus.CONFLICT);
         }*/
-		projectService.saveProject(project);
+		projectService.save(project);
         HttpHeaders headers = new HttpHeaders();
         headers.setLocation(ucBuilder.path("/{id}").buildAndExpand(project.getId()).toUri());
         return new ResponseEntity<Void>(headers, HttpStatus.CREATED);

@@ -25,7 +25,7 @@ public class UserServiceTest {
 		userRepositoryMock = mock(UserRepository.class);
 	}
 	
-	@Test(expected = ResourceNotFoundException.class)
+	/*@Test(expected = ResourceNotFoundException.class)
 	public void shouldThrowExceptionWhenNoUserWithRequestedIdFound() {
 		//when
 		when(userRepositoryMock.findById(10L)).thenReturn(Optional.empty());
@@ -33,7 +33,7 @@ public class UserServiceTest {
 		userService.getUserById(10L);
 	}
 	
-	/*@Test
+	@Test
 	public void shouldNotSaveUserWithEmptyId() {
 		//given
 		User user = new User();

@@ -3,6 +3,7 @@ import { NgModule } from '@angular/core';
 import { GiphyService } from './shared/giphy/giphy.service';
 import { AppComponent } from './app.component';
 import { ProjectService } from './shared/project/project.service';
+import { UserService } from './shared/user/user.service';
 import { HttpClientModule } from '@angular/common/http';
 import { ProjectListComponent } from './project-list/project-list.component'
 import { MatButtonModule, MatCardModule, MatInputModule, MatListModule, MatToolbarModule } from '@angular/material';
@@ -65,7 +66,7 @@ const appRoutes: Routes = [
     RouterModule.forRoot(appRoutes),
 	OktaAuthModule.initAuth(config)
   ],
-  providers: [ProjectService, GiphyService, {provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true}],
+  providers: [ProjectService, UserService, GiphyService, {provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true}],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

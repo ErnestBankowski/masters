@@ -1,6 +1,7 @@
 package com.stratum.service;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -15,25 +16,30 @@ public class ProjectServiceImpl implements ProjectService{
 	ProjectRepository projectRepository;
 	
 	@Override
-	public List<Project> listProjects() {
+	public List<Project> list() {
 		return projectRepository.findAll();
 	}
 
 	@Override
-	public Project getProjectById(Long id) {
+	public Optional<Project> getOne(Long id) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public void saveProject(Project project) {
+	public void save(Project project) {
 		projectRepository.save(project);
 	}
 
 	@Override
-	public void deleteProject(Project project) {
+	public void delete(Project project) {
 		// TODO Auto-generated method stub
 		
+	}
+
+	@Override
+	public boolean exists(Long id) {
+		return false;
 	}
 
 }

@@ -76,7 +76,7 @@ public class Project {
 	@Override
 	public String toString() {
 		return "USER [id = "+id+"] "
-		+ "[projectOwnerId = "+projectOwner.getId()+"] "
+		+ "[projectOwnerEmail = "+projectOwner.getEmail()+"] "
 		+ "[projectStartTime = "+projectStartTime+"] "
 		+ "[projectEndTime = "+projectEndTime+"] "
 		+ "[projectName = "+projectName+"]";

@@ -18,28 +18,29 @@ public class UserServiceImpl implements UserService{
 	UserRepository userRepository;
 	
 	@Override
-	public List<User> listUsers() {
+	public List<User> list() {
 		return userRepository.findAll();
 	}
 
 	@Override
-	public User getUserById(Long id) {
-		Optional<User> maybeUser = userRepository.findById(id);
-		if(maybeUser.isPresent()){
-			return maybeUser.get();
-		}else{
-			throw new ResourceNotFoundException("user", "id", id);
-		}
+	public Optional<User> getOne(String email) {
+		Optional<User> maybeUser = userRepository.findById(email);
+		return maybeUser;
 	}
 
 	@Override
-	public void saveUser(User user) {
+	public void save(User user) {
 		userRepository.save(user);
 	}
 
 	@Override
-	public void deleteUser(User user) {
+	public void delete(User user) {
 		userRepository.delete(user);		
+	}
+
+	@Override
+	public boolean exists(String email) {
+		return userRepository.findById(email).isPresent();
 	}
 
 }
