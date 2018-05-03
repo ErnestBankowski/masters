@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ProjectService } from '../shared/project/project.service';
 import { GiphyService } from '../shared/giphy/giphy.service';
+import {MatTabsModule} from '@angular/material/tabs';
 
 @Component({
   selector: 'app-project-list',

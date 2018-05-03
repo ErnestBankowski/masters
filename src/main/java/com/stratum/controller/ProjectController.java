@@ -3,8 +3,11 @@ package com.stratum.controller;
 import java.util.List;
 import java.util.Optional;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -19,7 +22,9 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import com.stratum.model.Project;
+import com.stratum.model.User;
 import com.stratum.service.ProjectService;
+import com.stratum.service.SessionService;
 
 @RestController
 @RequestMapping("/project")
@@ -29,9 +34,11 @@ public class ProjectController {
 	@Autowired
 	ProjectService projectService;
 	
+	@Autowired
+	SessionService sessionService;
+	
 	@RequestMapping(method = RequestMethod.GET)
 	public ResponseEntity<List<Project>> listProjects() {
-		System.out.println("a projekty działają...");
 		List<Project> projects = projectService.list();
 	       if(projects.isEmpty()){
 	            return new ResponseEntity<List<Project> >(HttpStatus.NO_CONTENT);
@@ -49,14 +56,21 @@ public class ProjectController {
     }
 	
 	@RequestMapping(method = RequestMethod.POST)
-    public ResponseEntity<Void> createProject(OAuth2Authentication auth, @RequestBody Project project, UriComponentsBuilder ucBuilder) { 
+    public ResponseEntity<Void> createProject(HttpServletRequest  request, OAuth2Authentication auth, @RequestBody Project project, UriComponentsBuilder ucBuilder) { 
      /*   if (projectService.isProjectExistent(project)) {
             return new ResponseEntity<Void>(HttpStatus.CONFLICT);
         }*/
-		projectService.save(project);
-        HttpHeaders headers = new HttpHeaders();
-        headers.setLocation(ucBuilder.path("/{id}").buildAndExpand(project.getId()).toUri());
-        return new ResponseEntity<Void>(headers, HttpStatus.CREATED);
+		 Optional<User> maybeLoggedUser = sessionService.findLoggedUser(auth);
+	        if (maybeLoggedUser.isPresent()) {
+	        	project.setProjectOwnerId(maybeLoggedUser.get());
+	    		projectService.save(project);
+	            HttpHeaders headers = new HttpHeaders();
+	            headers.setLocation(ucBuilder.path("/{id}").buildAndExpand(project.getId()).toUri());
+	            return new ResponseEntity<Void>(headers, HttpStatus.CREATED);      
+	        } else {
+	        	 return new ResponseEntity<Void>(HttpStatus.UNAUTHORIZED);   
+	        }
+		
     }
 	
 }

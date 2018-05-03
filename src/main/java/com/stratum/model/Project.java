@@ -1,5 +1,7 @@
 package com.stratum.model;
 
+import java.util.Date;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -24,10 +26,10 @@ public class Project {
 	private User projectOwner;
 	
 	@Column(name="project_start")
-	private long projectStartTime;
+	private Date projectStartTime;
 	
 	@Column(name="project_end")
-	private long projectEndTime;
+	private Date projectEndTime;
 	
 	@Column(name="project_name")
 	private String projectName;
@@ -49,19 +51,19 @@ public class Project {
 		this.projectOwner = projectOwner;
 	}
 
-	public long getProjectStartTime() {
+	public Date getProjectStartTime() {
 		return projectStartTime;
 	}
 
-	public void setProjectStartTime(long projectStartTime) {
+	public void setProjectStartTime(Date projectStartTime) {
 		this.projectStartTime = projectStartTime;
 	}
 
-	public long getProjectEndTime() {
+	public Date getProjectEndTime() {
 		return projectEndTime;
 	}
 
-	public void setProjectEndTime(long projectEndTime) {
+	public void setProjectEndTime(Date projectEndTime) {
 		this.projectEndTime = projectEndTime;
 	}
 

@@ -12,7 +12,6 @@ import { NgForm } from '@angular/forms';
 })
 export class ProjectEditComponent implements OnInit, OnDestroy {
   project: any = {};
-
   sub: Subscription;
 
   constructor(

@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.stratum.model.Project;
+import com.stratum.model.ProjectParticipant;
 import com.stratum.repository.ProjectRepository;
 
 @Service
@@ -22,8 +23,7 @@ public class ProjectServiceImpl implements ProjectService{
 
 	@Override
 	public Optional<Project> getOne(Long id) {
-		// TODO Auto-generated method stub
-		return null;
+		return projectRepository.findById(id);
 	}
 
 	@Override
@@ -41,5 +41,5 @@ public class ProjectServiceImpl implements ProjectService{
 	public boolean exists(Long id) {
 		return false;
 	}
-
+	
 }

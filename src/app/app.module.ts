@@ -15,6 +15,9 @@ import { OktaCallbackComponent, OktaAuthModule } from '@okta/okta-angular';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AuthInterceptor } from './shared/okta/auth.interceptor';
 import { HomeComponent } from './home/home.component';
+import {MatDatepickerModule} from '@angular/material/datepicker';
+import {MatNativeDateModule} from '@angular/material';
+import {MatTabsModule} from '@angular/material/tabs';
 
 const config = {
   issuer: 'https://dev-531715.oktapreview.com/oauth2/default',
@@ -62,8 +65,11 @@ const appRoutes: Routes = [
     MatInputModule,
     MatListModule,
     MatToolbarModule,
+    MatTabsModule,
     FormsModule,
     RouterModule.forRoot(appRoutes),
+    MatDatepickerModule,
+    MatNativeDateModule,
 	OktaAuthModule.initAuth(config)
   ],
   providers: [ProjectService, UserService, GiphyService, {provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true}],
