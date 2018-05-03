@@ -1,5 +1,6 @@
 package com.stratum.controller;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -22,7 +23,9 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import com.stratum.model.Project;
+import com.stratum.model.ProjectParticipant;
 import com.stratum.model.User;
+import com.stratum.service.ProjectParticipantService;
 import com.stratum.service.ProjectService;
 import com.stratum.service.SessionService;
 
@@ -33,6 +36,9 @@ public class ProjectController {
 
 	@Autowired
 	ProjectService projectService;
+	
+	@Autowired
+	ProjectParticipantService projectParticipantService;
 	
 	@Autowired
 	SessionService sessionService;
@@ -64,6 +70,14 @@ public class ProjectController {
 	        if (maybeLoggedUser.isPresent()) {
 	        	project.setProjectOwnerId(maybeLoggedUser.get());
 	    		projectService.save(project);
+	    		ProjectParticipant participant = new ProjectParticipant
+	    				.ProjectParticipantBuilder()
+	    				.user(maybeLoggedUser.get())
+	    				.project(project)
+	    				.role(ProjectParticipant.Role.PROJECT_MANAGER.toString())
+	    				.date(new Date(System.currentTimeMillis()))
+	    				.build();
+	    		projectParticipantService.save(participant);
 	            HttpHeaders headers = new HttpHeaders();
 	            headers.setLocation(ucBuilder.path("/{id}").buildAndExpand(project.getId()).toUri());
 	            return new ResponseEntity<Void>(headers, HttpStatus.CREATED);      

@@ -6,12 +6,9 @@
       <mat-list-item *ngFor="let project of projects">
         <img mat-list-avatar src="{{project.giphyUrl}}" alt="{{project.projectName}}">
         <h3 mat-line>
-            <a mat-button [routerLink]="['/project-edit', project.id]">{{project.projectName}} {{project.projectOwnerId.email}} {{project.projectStartTime}} {{project.projectEndTime}}</a>
+            <a mat-button [routerLink]="['/project-details', project.id]">{{project.projectName}}</a>
           </h3>
       </mat-list-item>    
     </mat-list>
-
-
   </mat-card-content>
-  <button mat-fab color="primary" [routerLink]="['/project-add']">Add</button>
 </mat-card>

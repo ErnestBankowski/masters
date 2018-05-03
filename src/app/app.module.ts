@@ -18,6 +18,14 @@ import { HomeComponent } from './home/home.component';
 import {MatDatepickerModule} from '@angular/material/datepicker';
 import {MatNativeDateModule} from '@angular/material';
 import {MatTabsModule} from '@angular/material/tabs';
+import { ProjectDetailsComponent } from './project-details/project-details.component';
+import {MatExpansionModule} from '@angular/material/expansion';
+import {MatDividerModule} from '@angular/material/divider';
+import {MatMenuModule} from '@angular/material/menu';
+import { SprintEditComponent } from './sprint-edit/sprint-edit.component';
+import { SprintListComponent } from './sprint-list/sprint-list.component';
+import { SprintDetailsComponent } from './sprint-details/sprint-details.component';
+import {MatAutocompleteModule} from '@angular/material/autocomplete';
 
 const config = {
   issuer: 'https://dev-531715.oktapreview.com/oauth2/default',
@@ -34,6 +42,10 @@ const appRoutes: Routes = [
   {
     path: 'project-list',
     component: ProjectListComponent
+  },
+  {
+    path: 'project-details/:id',
+    component: ProjectDetailsComponent
   },
   {
     path: 'project-add',
@@ -54,7 +66,11 @@ const appRoutes: Routes = [
     AppComponent,
     ProjectListComponent,
     ProjectEditComponent,
-    HomeComponent
+    HomeComponent,
+    ProjectDetailsComponent,
+    SprintEditComponent,
+    SprintListComponent,
+    SprintDetailsComponent
   ],
   imports: [
     BrowserModule,
@@ -70,7 +86,11 @@ const appRoutes: Routes = [
     RouterModule.forRoot(appRoutes),
     MatDatepickerModule,
     MatNativeDateModule,
-	OktaAuthModule.initAuth(config)
+    MatExpansionModule,
+    MatDividerModule,
+    MatMenuModule,
+    MatAutocompleteModule,
+	  OktaAuthModule.initAuth(config)
   ],
   providers: [ProjectService, UserService, GiphyService, {provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true}],
   bootstrap: [AppComponent]

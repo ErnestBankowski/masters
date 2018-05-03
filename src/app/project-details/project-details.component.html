@@ -1,0 +1,50 @@
+<mat-accordion>
+    <mat-expansion-panel 
+    (opened)="detailsOpen = true"
+    (closed)="detailsOpen = false">>
+      <mat-expansion-panel-header>
+        <mat-panel-title>
+          Project details
+        </mat-panel-title>
+        <mat-panel-description>
+          Click to {{detailsOpen ? 'collapse' : 'expand'}}
+        </mat-panel-description>
+      </mat-expansion-panel-header>
+      <mat-list>
+          <mat-list-item><b>Project name: </b>{{project.projectName}}</mat-list-item>
+          <mat-divider></mat-divider>
+          <mat-list-item><b>Project manager: </b>{{project.projectOwnerId.email}}</mat-list-item>
+          <mat-divider></mat-divider>
+          <mat-list-item><b>Project start date: </b>{{project.projectStartTime}}</mat-list-item>
+          <mat-divider></mat-divider>
+          <mat-list-item><b>Project end date: </b>{{project.projectEndTime}}</mat-list-item>
+        </mat-list>
+      <p></p>
+    </mat-expansion-panel>
+    <mat-expansion-panel 
+    (opened)="participantsOpen = true"
+    (closed)="participantsOpen = false">
+      <mat-expansion-panel-header>
+        <mat-panel-title>
+          Project participants
+        </mat-panel-title>
+        <mat-panel-description>
+            Click to {{participantsOpen ? 'collapse' : 'expand'}}
+        </mat-panel-description>
+      </mat-expansion-panel-header>
+      <p>I'm visible because I am open</p>
+    </mat-expansion-panel>
+    <mat-expansion-panel 
+    (opened)="sprintsOpen = true"
+    (closed)="sprintsOpen = false">
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            Project sprints
+          </mat-panel-title>
+          <mat-panel-description>
+              Click to {{sprintsOpen ? 'collapse' : 'expand'}}
+          </mat-panel-description>
+        </mat-expansion-panel-header>
+        <p>{{project.projectName}}</p>
+      </mat-expansion-panel>
+  </mat-accordion>
