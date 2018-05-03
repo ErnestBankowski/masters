@@ -74,6 +74,9 @@ public class ProjectParticipant {
 		this.enrollTime = enrollTime;
 	}
 
+	public ProjectParticipant() {
+		
+	}
 	
 	private ProjectParticipant(ProjectParticipantBuilder builder) {
 		this.participant =  builder.participant;

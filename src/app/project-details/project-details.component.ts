@@ -2,8 +2,21 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs/Subscription';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ProjectService } from '../shared/project/project.service';
+import { UserService } from '../shared/user/user.service';
 import { GiphyService } from '../shared/giphy/giphy.service';
 import { NgForm } from '@angular/forms';
+import {FormControl} from '@angular/forms';
+import {Observable} from 'rxjs/Observable';
+import {startWith} from 'rxjs/operators/startWith';
+import {map} from 'rxjs/operators/map';
+
+export class User {
+  constructor(public email: string) { }
+}
+
+export class Role {
+  constructor(public role: string) { }
+}
 
 @Component({
   selector: 'app-project-details',
@@ -13,15 +26,31 @@ import { NgForm } from '@angular/forms';
 export class ProjectDetailsComponent implements OnInit, OnDestroy{
   project: any = {};
   sub: Subscription;
+  userControl : FormControl = new FormControl();
+  filteredUsers: Observable<any[]>;
+  users: any[] = [];
+  projectParticipants: any[] = [];
+  roles: Role[] = [{role: "Project Manager"}, {role: "Architect"}, {role: "Developer"}, {role: "Tester"}];
+  displayedColumns = ['email', 'role', 'enrollTime'];
 
-  constructor(
-    private route: ActivatedRoute,
-    private router: Router,
-    private projectService: ProjectService) {}
+
+  constructor(private route: ActivatedRoute, private router: Router, private projectService: ProjectService, private userService: UserService) {
+      this.filteredUsers = this.userControl.valueChanges
+        .pipe(
+          startWith(''),
+          map(user => this.filterUsers(user))
+        );
+    }
+
+    filterUsers(email: string) {
+      return this.users.filter(user =>
+      user.email.toLowerCase().indexOf(email.toLowerCase()) === 0);
+    }
 
   ngOnInit() {
+    var id = "";
     this.sub = this.route.params.subscribe(params => {
-      const id = params['id'];
+      id = params['id'];
       if (id) {
         this.projectService.get(id).subscribe((project: any) => {
           if (project) {
@@ -34,14 +63,42 @@ export class ProjectDetailsComponent implements OnInit, OnDestroy{
         });
       }
     });
+   
+    this.projectService.getParticipants(id).subscribe(data => {
+      var temp: any[] = [];
+      for (const fetchedParticipant of data) {
+        temp.push({email: fetchedParticipant.participant.email, role: fetchedParticipant.role, enrollTime: fetchedParticipant.enrollTime});
+      }
+      this.projectParticipants = temp;
+    });
+
+    this.userService.getAll().subscribe(data => {
+      for (const fetchedUser of data) {
+        this.users.push(fetchedUser);
+      }
+    });
+
+
   }
 
   ngOnDestroy() {
     this.sub.unsubscribe();
   }
 
+  saveParticipant(form: NgForm) {
+    this.projectService.saveParticipant(form).subscribe(result => {
+      this.gotoList();
+    }, error => console.error(error));
+  }
+
   gotoList() {
     this.router.navigate(['/project-list']);
   }
 
+}
+
+export interface Element {
+  email: string;
+  role: string;
+  enrollTime: string;
 }

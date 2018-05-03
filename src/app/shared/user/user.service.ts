@@ -13,4 +13,9 @@ export class UserService {
     this.http.get(this.USER_API + '/authenticate').subscribe(result => {
     }, error => console.error(error));;
   } 
+
+  getAll(): Observable<any> {
+    return this.http.get('//localhost:8080/users/get');
+  }
+
 }

@@ -9,7 +9,7 @@ import { ProjectListComponent } from './project-list/project-list.component'
 import { MatButtonModule, MatCardModule, MatInputModule, MatListModule, MatToolbarModule } from '@angular/material';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ProjectEditComponent } from './project-edit/project-edit.component';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule, Routes } from '@angular/router';
 import { OktaCallbackComponent, OktaAuthModule } from '@okta/okta-angular';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
@@ -26,6 +26,9 @@ import { SprintEditComponent } from './sprint-edit/sprint-edit.component';
 import { SprintListComponent } from './sprint-list/sprint-list.component';
 import { SprintDetailsComponent } from './sprint-details/sprint-details.component';
 import {MatAutocompleteModule} from '@angular/material/autocomplete';
+import {MatFormFieldModule} from '@angular/material/form-field';
+import {MatSelectModule} from '@angular/material/select';
+import {MatTableModule} from '@angular/material/table';
 
 const config = {
   issuer: 'https://dev-531715.oktapreview.com/oauth2/default',
@@ -83,6 +86,7 @@ const appRoutes: Routes = [
     MatToolbarModule,
     MatTabsModule,
     FormsModule,
+    ReactiveFormsModule,
     RouterModule.forRoot(appRoutes),
     MatDatepickerModule,
     MatNativeDateModule,
@@ -90,6 +94,9 @@ const appRoutes: Routes = [
     MatDividerModule,
     MatMenuModule,
     MatAutocompleteModule,
+    MatFormFieldModule,
+    MatSelectModule,
+    MatTableModule,
 	  OktaAuthModule.initAuth(config)
   ],
   providers: [ProjectService, UserService, GiphyService, {provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true}],

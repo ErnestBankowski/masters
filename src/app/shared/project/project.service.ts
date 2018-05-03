@@ -27,6 +27,16 @@ export class ProjectService {
     return result;
   }
 
+  saveParticipant(projectParticipant: any): Observable<any> {
+    let result: Observable<Object>;
+    result = this.http.post(this.PROJECT_API +'/saveParticipant', projectParticipant);
+    return result;
+  }
+
+  getParticipants(id: string) : Observable<any>{
+    return this.http.get(this.PROJECT_API + '/participants/' + id);
+  }
+
   remove(href: string) {
     return this.http.delete(href);
   }

@@ -4,6 +4,8 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Example;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Service;
 
 import com.stratum.model.Project;
@@ -26,8 +28,7 @@ public class ProjectParticipantServiceImpl implements ProjectParticipantService{
 
 	@Override
 	public Optional<ProjectParticipant> getOne(Long id) {
-		// TODO Auto-generated method stub
-		return null;
+		return projectParticipantRepository.findById(id);
 	}
 
 	@Override
@@ -45,6 +46,10 @@ public class ProjectParticipantServiceImpl implements ProjectParticipantService{
 	public boolean exists(Long id) {
 		// TODO Auto-generated method stub
 		return false;
+	}
+	
+	public List<ProjectParticipant> getAllForProject(Long id) {
+		return projectParticipantRepository.getAllForProject(id);
 	}
 
 	
