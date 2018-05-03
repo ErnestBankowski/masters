@@ -11,6 +11,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
 @Entity
 @Table(name="project_participant")
 public class ProjectParticipant {
@@ -31,6 +33,7 @@ public class ProjectParticipant {
 	@Column(name="role")
 	private String role;
 	
+	@DateTimeFormat(pattern = "dd/MM/yyyy HH:mm:ss")
 	@Column(name="enroll_time")
 	private Date enrollTime;
 	

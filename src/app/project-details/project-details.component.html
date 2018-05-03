@@ -1,7 +1,7 @@
 <mat-accordion>
     <mat-expansion-panel 
     (opened)="detailsOpen = true"
-    (closed)="detailsOpen = false">>
+    (closed)="detailsOpen = false">
       <mat-expansion-panel-header>
         <mat-panel-title>
           Project details
@@ -11,13 +11,13 @@
         </mat-panel-description>
       </mat-expansion-panel-header>
       <mat-list>
-          <mat-list-item><span><b>Project name: </b></span> | {{project.projectName}}</mat-list-item>
+          <mat-list-item><span><b>Project name </b></span> | {{project.projectName}}</mat-list-item>
           <mat-divider></mat-divider>
-          <mat-list-item><span><b>Project manager: </b></span> | {{project.projectOwnerId.email}}</mat-list-item>
+          <mat-list-item><span><b>Project manager </b></span> | {{project.projectOwnerId.email}}</mat-list-item>
           <mat-divider></mat-divider>
-          <mat-list-item><span><b>Project start date: </b></span> | {{project.projectStartTime}}</mat-list-item>
+          <mat-list-item><span><b>Project start date </b></span> | {{project.projectStartTime}}</mat-list-item>
           <mat-divider></mat-divider>
-          <mat-list-item><span><b>Project end date: </b></span> | {{project.projectEndTime}}</mat-list-item>
+          <mat-list-item><span><b>Project end date </b></span> | {{project.projectEndTime}}</mat-list-item>
         </mat-list>
       <p></p>
     </mat-expansion-panel>
@@ -106,6 +106,62 @@
               Click to {{sprintsOpen ? 'collapse' : 'expand'}}
           </mat-panel-description>
         </mat-expansion-panel-header>
-        <p>{{project.projectName}}</p>
+        
+        <div class="example-container mat-elevation-z8">
+            <mat-table #table [dataSource]="sprints">
+                
+              <!-- Name Column -->
+              <ng-container matColumnDef="name">
+                <mat-header-cell *matHeaderCellDef> Name </mat-header-cell>
+                <mat-cell *matCellDef="let sprint"> {{sprint.name}} </mat-cell>
+              </ng-container>
+          
+              <!-- Weight Column -->
+              <ng-container matColumnDef="creator">
+                <mat-header-cell *matHeaderCellDef> Creator </mat-header-cell>
+                <mat-cell *matCellDef="let sprint"> {{sprint.creator}} </mat-cell>
+              </ng-container>
+          
+              <!-- Symbol Column -->
+              <ng-container matColumnDef="start">
+                <mat-header-cell *matHeaderCellDef> Start Date </mat-header-cell>
+                <mat-cell *matCellDef="let sprint"> {{sprint.start}} </mat-cell>
+              </ng-container>
+          
+                            <!-- Symbol Column -->
+              <ng-container matColumnDef="end">
+                 <mat-header-cell *matHeaderCellDef> End Date </mat-header-cell>
+                <mat-cell *matCellDef="let sprint"> {{sprint.end}} </mat-cell>
+               </ng-container>
+
+              <mat-header-row *matHeaderRowDef="sprintColumns"></mat-header-row>
+              <mat-row *matRowDef="let row; columns: sprintColumns;"></mat-row>
+            </mat-table>
+          </div>
+
+        <form #sprintForm="ngForm" (ngSubmit)="saveSprint(sprintForm.value)">
+            <input matInput value = {{project.id}} name = "project" [(ngModel)]="project.id" hidden>          
+           
+            <mat-form-field>
+                <input matInput placeholder="Sprint Name" [(ngModel)]="sprintName" required name="sprintName" #name>
+            </mat-form-field>
+            
+            <mat-form-field>
+                <input matInput [matDatepicker]="startPicker" placeholder="Start Date" [(ngModel)]="sprintStartTime" name="sprintStartTime" #name>
+                <mat-datepicker-toggle matSuffix [for]="startPicker"></mat-datepicker-toggle>
+                <mat-datepicker #startPicker disabled="false"></mat-datepicker>
+            </mat-form-field>
+           
+            <mat-form-field>
+                <input matInput [matDatepicker]="endPicker" placeholder="End Date" [(ngModel)]="sprintEndTime" name="sprintEndTime" #name>
+                <mat-datepicker-toggle matSuffix [for]="endPicker"></mat-datepicker-toggle>
+                <mat-datepicker #endPicker disabled="false"></mat-datepicker>
+            </mat-form-field>
+           
+              <mat-card-actions>
+              <button mat-raised-button color="primary" type="submit"[disabled]="!sprintForm.form.valid">Save</button>
+            </mat-card-actions>
+          </form>
+        
       </mat-expansion-panel>
   </mat-accordion>

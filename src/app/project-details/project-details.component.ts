@@ -3,6 +3,7 @@ import { Subscription } from 'rxjs/Subscription';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ProjectService } from '../shared/project/project.service';
 import { UserService } from '../shared/user/user.service';
+import { SprintService } from '../shared/sprint/sprint.service';
 import { GiphyService } from '../shared/giphy/giphy.service';
 import { NgForm } from '@angular/forms';
 import {FormControl} from '@angular/forms';
@@ -30,11 +31,12 @@ export class ProjectDetailsComponent implements OnInit, OnDestroy{
   filteredUsers: Observable<any[]>;
   users: any[] = [];
   projectParticipants: any[] = [];
+  sprints: any[] = [];
   roles: Role[] = [{role: "Project Manager"}, {role: "Architect"}, {role: "Developer"}, {role: "Tester"}];
   displayedColumns = ['email', 'role', 'enrollTime'];
+  sprintColumns = ['name', 'creator', 'start', 'end'];
 
-
-  constructor(private route: ActivatedRoute, private router: Router, private projectService: ProjectService, private userService: UserService) {
+  constructor(private route: ActivatedRoute, private router: Router, private projectService: ProjectService, private userService: UserService, private sprintService: SprintService) {
       this.filteredUsers = this.userControl.valueChanges
         .pipe(
           startWith(''),
@@ -72,6 +74,18 @@ export class ProjectDetailsComponent implements OnInit, OnDestroy{
       this.projectParticipants = temp;
     });
 
+    this.sprintService.getAll(id).subscribe(data => {
+      var temp: any[] = [];
+      for (const fetchedSprint of data) {
+        temp.push({
+          name: fetchedSprint.sprintName,
+          creator: fetchedSprint.creator.email, 
+          start: fetchedSprint.sprintStartTime, 
+          end: fetchedSprint.sprintEndTime});
+      }
+      this.sprints = temp;
+    });
+
     this.userService.getAll().subscribe(data => {
       for (const fetchedUser of data) {
         this.users.push(fetchedUser);
@@ -89,6 +103,12 @@ export class ProjectDetailsComponent implements OnInit, OnDestroy{
     this.projectService.saveParticipant(form).subscribe(result => {
       this.gotoList();
     }, error => console.error(error));
+  }
+
+  saveSprint(form: NgForm) {
+    this.sprintService.save(form).subscribe(result => {
+      this.gotoList();
+    }, error => console.error(error));;
   }
 
   gotoList() {
