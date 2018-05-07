@@ -10,6 +10,10 @@ import {FormControl} from '@angular/forms';
 import {Observable} from 'rxjs/Observable';
 import {startWith} from 'rxjs/operators/startWith';
 import {map} from 'rxjs/operators/map';
+import { MatDialogModule } from '@angular/material/dialog';
+import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
+import { SprintEditComponent } from '../sprint-edit/sprint-edit.component';
+import { ProjectEditComponent } from '../project-edit/project-edit.component';
 
 export class User {
   constructor(public email: string) { }
@@ -36,7 +40,12 @@ export class ProjectDetailsComponent implements OnInit, OnDestroy{
   displayedColumns = ['email', 'role', 'enrollTime'];
   sprintColumns = ['name', 'creator', 'start', 'end'];
 
-  constructor(private route: ActivatedRoute, private router: Router, private projectService: ProjectService, private userService: UserService, private sprintService: SprintService) {
+  constructor(private route: ActivatedRoute,
+    private router: Router,
+    private projectService: ProjectService, 
+    private userService: UserService, 
+    private sprintService: SprintService, 
+    public createSprintDialog: MatDialog) {
       this.filteredUsers = this.userControl.valueChanges
         .pipe(
           startWith(''),
@@ -105,14 +114,14 @@ export class ProjectDetailsComponent implements OnInit, OnDestroy{
     }, error => console.error(error));
   }
 
-  saveSprint(form: NgForm) {
-    this.sprintService.save(form).subscribe(result => {
-      this.gotoList();
-    }, error => console.error(error));;
-  }
-
   gotoList() {
     this.router.navigate(['/project-list']);
+  }
+
+  openCreateSprintDialog() {
+    let dialogRef = this.createSprintDialog.open(SprintEditComponent, {
+      data: { id: this.project.id }
+    });
   }
 
 }

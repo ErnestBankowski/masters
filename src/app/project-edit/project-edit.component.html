@@ -20,11 +20,11 @@
         </mat-form-field>
       </mat-card-content>
       <mat-card-actions>
-        <button mat-raised-button color="primary" type="submit"
+        <button mat-raised-button color="primary" (click) = "closeDialog()" type="submit"
                 [disabled]="!projectForm.form.valid">Save</button>
         <button mat-raised-button color="secondary" (click)="remove(project.href)"
                 *ngIf="project.href" type="button">Delete</button>
-        <a mat-button routerLink="/project-list">Cancel</a>
+        <a mat-button routerLink="/project-list" (click) = "closeDialog()">Cancel</a>
       </mat-card-actions>
       <mat-card-footer>
         <div class="giphy">

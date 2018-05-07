@@ -60,6 +60,14 @@ const appRoutes: Routes = [
     component: ProjectEditComponent
   },
   {
+    path: 'sprint-add',
+    component: SprintEditComponent
+  },
+  {
+    path: 'sprint-edit/:id',
+    component: SprintEditComponent
+  },
+  {
     path: 'implicit/callback',
     component: OktaCallbackComponent
   },

@@ -138,30 +138,6 @@
               <mat-row *matRowDef="let row; columns: sprintColumns;"></mat-row>
             </mat-table>
           </div>
-
-        <form #sprintForm="ngForm" (ngSubmit)="saveSprint(sprintForm.value)">
-            <input matInput value = {{project.id}} name = "project" [(ngModel)]="project.id" hidden>          
-           
-            <mat-form-field>
-                <input matInput placeholder="Sprint Name" [(ngModel)]="sprintName" required name="sprintName" #name>
-            </mat-form-field>
-            
-            <mat-form-field>
-                <input matInput [matDatepicker]="startPicker" placeholder="Start Date" [(ngModel)]="sprintStartTime" name="sprintStartTime" #name>
-                <mat-datepicker-toggle matSuffix [for]="startPicker"></mat-datepicker-toggle>
-                <mat-datepicker #startPicker disabled="false"></mat-datepicker>
-            </mat-form-field>
-           
-            <mat-form-field>
-                <input matInput [matDatepicker]="endPicker" placeholder="End Date" [(ngModel)]="sprintEndTime" name="sprintEndTime" #name>
-                <mat-datepicker-toggle matSuffix [for]="endPicker"></mat-datepicker-toggle>
-                <mat-datepicker #endPicker disabled="false"></mat-datepicker>
-            </mat-form-field>
-           
-              <mat-card-actions>
-              <button mat-raised-button color="primary" type="submit"[disabled]="!sprintForm.form.valid">Save</button>
-            </mat-card-actions>
-          </form>
-        
+          <button mat-raised-button (click)="openCreateSprintDialog()">Add sprint</button>
       </mat-expansion-panel>
   </mat-accordion>

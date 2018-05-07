@@ -1,9 +1,10 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit, Inject} from '@angular/core';
 import { Subscription } from 'rxjs/Subscription';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ProjectService } from '../shared/project/project.service';
 import { GiphyService } from '../shared/giphy/giphy.service';
 import { NgForm } from '@angular/forms';
+import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material';
 
 @Component({
   selector: 'app-project-edit',
@@ -18,7 +19,9 @@ export class ProjectEditComponent implements OnInit, OnDestroy {
     private route: ActivatedRoute,
     private router: Router,
     private projectService: ProjectService,
-    private giphyService: GiphyService){
+    private giphyService: GiphyService,
+    public dialogRef: MatDialogRef<ProjectEditComponent>,
+    @Inject(MAT_DIALOG_DATA) public data: any){
 
   }
 
@@ -46,12 +49,17 @@ export class ProjectEditComponent implements OnInit, OnDestroy {
 
   gotoList() {
     this.router.navigate(['/project-list']);
+    this.dialogRef.close();
   }
 
   save(form: NgForm) {
     this.projectService.save(form).subscribe(result => {
       this.gotoList();
     }, error => console.error(error));
+  }
+
+  closeDialog() {
+    this.dialogRef.close();
   }
 
   remove(href) {

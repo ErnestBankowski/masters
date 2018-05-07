@@ -1,3 +1,25 @@
-<p>
-  sprint-edit works!
-</p>
+<mat-card>
+<form #sprintForm="ngForm" (ngSubmit)="save(sprintForm.value)">
+  <input matInput value = {{project}} name = "project" [(ngModel)]="project" hidden>   
+   <mat-form-field>
+       <input matInput placeholder="Sprint Name" [(ngModel)]="sprintName" required name="sprintName" #name>
+   </mat-form-field>
+   
+   <mat-form-field>
+       <input matInput [matDatepicker]="startPicker" placeholder="Start Date" [(ngModel)]="sprintStartTime" name="sprintStartTime" #name>
+       <mat-datepicker-toggle matSuffix [for]="startPicker"></mat-datepicker-toggle>
+       <mat-datepicker #startPicker disabled="false"></mat-datepicker>
+   </mat-form-field>
+  
+   <mat-form-field>
+       <input matInput [matDatepicker]="endPicker" placeholder="End Date" [(ngModel)]="sprintEndTime" name="sprintEndTime" #name>
+       <mat-datepicker-toggle matSuffix [for]="endPicker"></mat-datepicker-toggle>
+       <mat-datepicker #endPicker disabled="false"></mat-datepicker>
+   </mat-form-field>
+  
+     <mat-card-actions>
+     <button mat-raised-button color="primary"  (click) = "closeDialog()" type="submit"[disabled]="!sprintForm.form.valid">Save</button>
+     <a mat-button (click) = "closeDialog()">Cancel</a>
+   </mat-card-actions>
+</form>
+</mat-card>
