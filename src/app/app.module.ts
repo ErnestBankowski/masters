@@ -30,6 +30,10 @@ import {MatAutocompleteModule} from '@angular/material/autocomplete';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatSelectModule} from '@angular/material/select';
 import {MatTableModule} from '@angular/material/table';
+import { FunctionalityEditComponent } from './functionality-edit/functionality-edit.component';
+import { FunctionalityDetailsComponent } from './functionality-details/functionality-details.component';
+import { SpecificationEditComponent } from './specification-edit/specification-edit.component';
+import { UsecaseEditComponent } from './usecase-edit/usecase-edit.component';
 
 const config = {
   issuer: 'https://dev-531715.oktapreview.com/oauth2/default',
@@ -82,7 +86,11 @@ const appRoutes: Routes = [
     ProjectDetailsComponent,
     SprintEditComponent,
     SprintListComponent,
-    SprintDetailsComponent
+    SprintDetailsComponent,
+    FunctionalityEditComponent,
+    FunctionalityDetailsComponent,
+    SpecificationEditComponent,
+    UsecaseEditComponent
   ],
   imports: [
     BrowserModule,
