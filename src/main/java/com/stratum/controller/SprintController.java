@@ -62,6 +62,16 @@ public class SprintController {
 		return new ResponseEntity<List<Sprint>>(HttpStatus.NOT_FOUND);
 	}
 	
+	@RequestMapping(value = "/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<Sprint> getSprintById(@PathVariable("id") long id) {
+		Optional<Sprint> maybeSprint = sprintService.getOne(id);
+		if(maybeSprint.isPresent()) {
+			return new ResponseEntity<Sprint>(maybeSprint.get(), HttpStatus.OK);
+		} else {
+			return new ResponseEntity<Sprint>(HttpStatus.NOT_FOUND);
+		}
+	}
+	
 	@RequestMapping(method = RequestMethod.POST)
 	public ResponseEntity<Void> createSprint(OAuth2Authentication auth, @RequestBody Object sprintData, UriComponentsBuilder ucBuilder) throws ParseException {
 		LinkedHashMap data = (LinkedHashMap) sprintData;

@@ -40,7 +40,8 @@ export class ProjectDetailsComponent implements OnInit, OnDestroy{
   displayedColumns = ['email', 'role', 'enrollTime'];
   sprintColumns = ['name', 'creator', 'start', 'end'];
 
-  constructor(private route: ActivatedRoute,
+  constructor(
+    private route: ActivatedRoute,
     private router: Router,
     private projectService: ProjectService, 
     private userService: UserService, 
@@ -87,6 +88,7 @@ export class ProjectDetailsComponent implements OnInit, OnDestroy{
       var temp: any[] = [];
       for (const fetchedSprint of data) {
         temp.push({
+          id: fetchedSprint.id,
           name: fetchedSprint.sprintName,
           creator: fetchedSprint.creator.email, 
           start: fetchedSprint.sprintStartTime, 

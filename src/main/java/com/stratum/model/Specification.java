@@ -14,7 +14,7 @@ import javax.persistence.Table;
 public class Specification {
 
 	@Id	
-	@Column(name="functionality_id")
+	@Column(name="specification_id")
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private long id;
 	

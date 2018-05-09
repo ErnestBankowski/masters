@@ -18,7 +18,7 @@ import com.stratum.model.ProjectParticipant.ProjectParticipantBuilder;
 public class Sprint {
 
 	@Id	
-	@Column(name="project_id")
+	@Column(name="sprint_id")
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private long id;
 	

@@ -13,4 +13,5 @@ public interface SprintRepository extends JpaRepository<Sprint, Long>{
 
 	@Query(value = "select * from sprint where project = ?1", nativeQuery = true)
 	public List<Sprint> getAllForProject(Long id);
+	
 }
