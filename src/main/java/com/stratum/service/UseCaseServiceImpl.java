@@ -43,4 +43,14 @@ public class UseCaseServiceImpl implements UseCaseService{
 		return false;
 	}
 
+	@Override
+	public UseCase getForFunctionality(Long id) {
+		List<UseCase> forFunctionality = useCaseRepository.getForFunctionality(id);
+		if(forFunctionality.isEmpty()){
+			return null;
+		} else {
+			return forFunctionality.get(0);
+		}
+	}
+
 }

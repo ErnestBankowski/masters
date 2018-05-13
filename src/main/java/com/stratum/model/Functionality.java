@@ -56,6 +56,10 @@ public class Functionality {
 	@ManyToOne
 	@JoinColumn(name="useCase")
 	private UseCase useCase;
+	
+	public Functionality() {
+		
+	}
 
 	public long getId() {
 		return id;
@@ -144,6 +148,141 @@ public class Functionality {
 	public void setUseCase(UseCase useCase) {
 		this.useCase = useCase;
 	}
+	
+	public Functionality(FunctionalityBuilder builder) {
+		this.sprint = builder.sprint;
+		this.creationDate = builder.creationDate;
+		this.creator = builder.creator;
+		this.responsibleArchitect = builder.responsibleArchitect;
+		this.responsibleDeveloper = builder.responsibleDeveloper;
+		this.responsibleTester = builder.responsibleTester;
+		this.state = builder.state;
+		this.name = builder.name;
+		this.specification = builder.specification;
+		this.useCase = builder.useCase;
+	}
+	
+	public static class FunctionalityBuilder {
+		
+		private Sprint sprint;
+		private Date creationDate;
+		private User creator;
+		private User responsibleDeveloper;
+		private User responsibleArchitect;
+		private User responsibleTester;
+		private String name;
+		private String state;
+		private Specification specification;
+		private UseCase useCase;
+		
+		public FunctionalityBuilder() {
+
+		}
+		
+		public FunctionalityBuilder sprint(Sprint sprint) {
+			this.sprint = sprint;
+			return this;
+		}
+		
+		public FunctionalityBuilder creationDate(Date creationDate) {
+			this.creationDate = creationDate;
+			return this;
+		}
+		
+		public FunctionalityBuilder creator(User creator) {
+			this.creator = creator;
+			return this;
+		}
+		
+		public FunctionalityBuilder responsibleDeveloper(User responsibleDeveloper) {
+			this.responsibleDeveloper = responsibleDeveloper;
+			return this;
+		}
+		
+		public FunctionalityBuilder responsibleArchitect(User responsibleArchitect) {
+			this.responsibleArchitect = responsibleArchitect;
+			return this;
+		}
+		
+		public FunctionalityBuilder responsibleTester(User responsibleTester) {
+			this.responsibleTester = responsibleTester;
+			return this;
+		}
+		
+		public FunctionalityBuilder name(String name) {
+			this.name = name;
+			return this;
+		}
+		
+		public FunctionalityBuilder state(String state) {
+			this.state = state;
+			return this;
+		}
+		
+		public FunctionalityBuilder specification(Specification specification) {
+			this.specification = specification;
+			return this;
+		}
+		
+		public FunctionalityBuilder useCase(UseCase useCase) {
+			this.useCase = useCase;
+			return this;
+		}
+		
+		public Functionality build() {
+			return new Functionality(this);
+		}		
+	}
+	
+	public static enum State{
+		NEW {
+			public String toString() {
+		          return "NEW";
+		      }
+		},
+		SPECIFIED {
+			public String toString() {
+		          return "SPECIFIED";
+		      }
+		},
+		ASSIGNED {
+			public String toString() {
+		          return "ASSIGNED";
+		      }
+		},
+		IN_DEVELOPMENT {
+			public String toString() {
+		          return "IN DEVELOPMENT";
+		      }
+		},
+		UNDER_REVIEW {
+			public String toString() {
+		          return "UNDER REVIEW";
+		      }
+		},
+		IN_TESTING {
+			public String toString() {
+		          return "IN TESTING";
+		      }
+		},
+		VALIDATED {
+			public String toString() {
+		          return "VALIDATED";
+		      }
+		},
+		COMPLETED {
+			public String toString() {
+		          return "COMPLETED";
+		      }
+		},
+		WITHDRAWN {
+			public String toString() {
+		          return "WITHDRAWN";
+		      }
+		}
+	}
+	
+	
 	
 	
 

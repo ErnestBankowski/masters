@@ -1,3 +1,27 @@
-<p>
-  functionality-details works!
-</p>
+<mat-card>
+<h2>{{functionality.id}} : {{functionality.name}}</h2>
+<mat-tab-group>
+  <mat-tab label="Details">
+    <mat-list>
+        <mat-list-item> <b>Project</b>&emsp;<a mat-button [routerLink]="['/project-details', functionality.sprint.project.id]">{{functionality.sprint.project.projectName}}</a></mat-list-item>
+        <mat-list-item> <b>Sprint</b>&emsp;<a mat-button [routerLink]="['/sprint-details', functionality.sprint.id]">{{functionality.sprint.sprintName}}</a></mat-list-item>
+        <mat-list-item> <b>State</b>&emsp;{{functionality.state}}&emsp;<button mat-raised-button color="primary" (click)="promote()" type="submit">Promote</button> </mat-list-item>
+        <mat-list-item> <b>Creator</b>&emsp;{{functionality.creator.email}}</mat-list-item>
+        <mat-list-item> <b>Creation Date</b>&emsp;{{functionality.creationDate}}</mat-list-item>
+        <mat-list-item> <b>Assigned Architect</b>&emsp;{{functionality.assignedArchitect}}</mat-list-item>
+        <mat-list-item> <b>Assigned Developer</b>&emsp;{{functionality.assignedDeveloper}}</mat-list-item>
+        <mat-list-item> <b>Assigned Tester</b>&emsp;{{functionality.assignedTester}}</mat-list-item>
+    </mat-list>
+  </mat-tab>
+  <mat-tab label="Specification">
+     <button mat-raised-button color="primary" (click)="createSpecification()" type="submit">Edit</button>
+  </mat-tab>
+  <mat-tab label="Use Case">
+      <button mat-raised-button color="primary" (click)="createUseCase()" type="submit">Edit</button>
+  </mat-tab>
+  <mat-tab label="Time Entries">
+    <h1>Some tab content</h1>
+    <p>...</p>
+  </mat-tab>
+</mat-tab-group>
+</mat-card>

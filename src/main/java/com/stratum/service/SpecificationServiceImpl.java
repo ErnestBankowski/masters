@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.stratum.model.Specification;
+import com.stratum.model.UseCase;
 import com.stratum.repository.SpecificationRepository;
 
 @Service
@@ -32,7 +33,7 @@ public class SpecificationServiceImpl implements SpecificationService{
 
 	@Override
 	public void delete(Specification object) {
-		// TODO Auto-generated method stub
+		specificationRepository.delete(object);
 		
 	}
 
@@ -40,6 +41,16 @@ public class SpecificationServiceImpl implements SpecificationService{
 	public boolean exists(Long id) {
 		// TODO Auto-generated method stub
 		return false;
+	}
+
+	@Override
+	public Specification getForFunctionality(Long id) {
+		List<Specification> forFunctionality = specificationRepository.getForFunctionality(id);
+		if(forFunctionality.isEmpty()){
+			return null;
+		} else {
+			return forFunctionality.get(0);
+		}
 	}
 
 }

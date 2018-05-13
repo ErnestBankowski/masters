@@ -14,6 +14,7 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { SprintEditComponent } from '../sprint-edit/sprint-edit.component';
 import { ProjectEditComponent } from '../project-edit/project-edit.component';
+import { FunctionalityEditComponent } from '../functionality-edit/functionality-edit.component';
 
 export class User {
   constructor(public email: string) { }
@@ -46,7 +47,8 @@ export class ProjectDetailsComponent implements OnInit, OnDestroy{
     private projectService: ProjectService, 
     private userService: UserService, 
     private sprintService: SprintService, 
-    public createSprintDialog: MatDialog) {
+    public createSprintDialog: MatDialog,
+    public createFunctionalityDialog: MatDialog) {
       this.filteredUsers = this.userControl.valueChanges
         .pipe(
           startWith(''),
@@ -123,6 +125,12 @@ export class ProjectDetailsComponent implements OnInit, OnDestroy{
   openCreateSprintDialog() {
     let dialogRef = this.createSprintDialog.open(SprintEditComponent, {
       data: { id: this.project.id }
+    });
+  }
+
+  openCreateFunctionalityDialog() {
+    let dialogRef = this.createFunctionalityDialog.open(FunctionalityEditComponent, {
+      data: { projectId: this.project.id }
     });
   }
 

@@ -77,6 +77,14 @@ const appRoutes: Routes = [
     component: SprintEditComponent
   },
   {
+    path: 'functionality-details/:id',
+    component: FunctionalityDetailsComponent
+  },
+  {
+    path: 'functionality-edit/:id',
+    component: FunctionalityEditComponent
+  },
+  {
     path: 'implicit/callback',
     component: OktaCallbackComponent
   },

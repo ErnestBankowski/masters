@@ -1,32 +1,48 @@
-<div class="example-container mat-elevation-z8">
-  <mat-table #table [dataSource]="functionalities">
-      
-    <ng-container matColumnDef="id">
-      <mat-header-cell *matHeaderCellDef> ID </mat-header-cell>
-      <mat-cell *matCellDef="let functionality">  <a mat-button [routerLink]="['/functionality-details', functionality.id]">{{functionality.id}}</a></mat-cell>
-    </ng-container>
+<mat-card>
+    <h2>{{sprint.id}} : {{sprint.sprintName}}</h2>
+    <mat-tab-group>
+      <mat-tab label="Details">
+        <mat-list>
+            <mat-list-item> <b>Project</b>&emsp;<a mat-button [routerLink]="['/project-details', sprint.project.id]">{{sprint.project.projectName}}</a></mat-list-item>
+            <mat-list-item> <b>Creator</b>&emsp;</mat-list-item>
+            <mat-list-item> <b>Start date</b>&emsp;{{sprint.sprintStartTime}}</mat-list-item>
+            <mat-list-item> <b>End Date</b>&emsp;{{sprint.sprintEndTime}}</mat-list-item>
+        </mat-list>
+      </mat-tab>
+      <mat-tab label="Functionalities">
+          <div class="example-container mat-elevation-z8">
+              <mat-table #table [dataSource]="functionalities">
+                  
+                <ng-container matColumnDef="id">
+                  <mat-header-cell *matHeaderCellDef> ID </mat-header-cell>
+                  <mat-cell *matCellDef="let functionality">  <a mat-button [routerLink]="['/functionality-details', functionality.id]">{{functionality.id}}</a></mat-cell>
+                </ng-container>
+            
+                <ng-container matColumnDef="name">
+                  <mat-header-cell *matHeaderCellDef> Name </mat-header-cell>
+                  <mat-cell *matCellDef="let functionality"> {{functionality.name}}</mat-cell>
+                </ng-container>
+            
+                <ng-container matColumnDef="state">
+                  <mat-header-cell *matHeaderCellDef> State </mat-header-cell>
+                  <mat-cell *matCellDef="let functionality"> {{functionality.state}} </mat-cell>
+                </ng-container>
+            
+                <ng-container matColumnDef="creator">
+                  <mat-header-cell *matHeaderCellDef> Creator </mat-header-cell>
+                  <mat-cell *matCellDef="let functionality"> {{functionality.creator.email}} </mat-cell>
+                </ng-container>
+            
+                <ng-container matColumnDef="creationDate">
+                   <mat-header-cell *matHeaderCellDef> Created </mat-header-cell>
+                  <mat-cell *matCellDef="let functionality"> {{functionality.creationDate}} </mat-cell>
+                 </ng-container>
+            
+                <mat-header-row *matHeaderRowDef="functionalityColumns"></mat-header-row>
+                <mat-row *matRowDef="let row; columns: functionalityColumns;"></mat-row>
+              </mat-table>
+            </div>
+      </mat-tab>
+    </mat-tab-group>
+    </mat-card>
 
-    <ng-container matColumnDef="name">
-      <mat-header-cell *matHeaderCellDef> Name </mat-header-cell>
-      <mat-cell *matCellDef="let functionality"> {{functionality.name}}</mat-cell>
-    </ng-container>
-
-    <ng-container matColumnDef="state">
-      <mat-header-cell *matHeaderCellDef> State </mat-header-cell>
-      <mat-cell *matCellDef="let functionality"> {{functionality.state}} </mat-cell>
-    </ng-container>
-
-    <ng-container matColumnDef="creator">
-      <mat-header-cell *matHeaderCellDef> Creator </mat-header-cell>
-      <mat-cell *matCellDef="let functionality"> {{functionality.creator}} </mat-cell>
-    </ng-container>
-
-    <ng-container matColumnDef="creationDate">
-       <mat-header-cell *matHeaderCellDef> Created </mat-header-cell>
-      <mat-cell *matCellDef="let functionality"> {{functionality.creationDate}} </mat-cell>
-     </ng-container>
-
-    <mat-header-row *matHeaderRowDef="functionalityColumns"></mat-header-row>
-    <mat-row *matRowDef="let row; columns: functionalityColumns;"></mat-row>
-  </mat-table>
-</div>

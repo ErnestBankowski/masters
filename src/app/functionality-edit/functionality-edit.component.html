@@ -1,3 +1,21 @@
-<p>
-  functionality-edit works!
-</p>
+<mat-card>
+    <form #sprintForm="ngForm" (ngSubmit)="save(sprintForm.value)">
+      <input matInput value = {{project}} name = "project" [(ngModel)]="project" hidden>   
+       <mat-form-field>
+           <input matInput placeholder="Functionality Name" [(ngModel)]="functionalityName" required name="functionalityName" #name>
+       </mat-form-field>
+       
+       <mat-form-field>
+            <mat-select placeholder="Sprint"  name = "sprint"  [(ngModel)]="sprint" [disabled]="isSprintIdProvided()">
+                <mat-option *ngFor="let sprint of sprints" [value]="sprint.id">
+                    <span>{{ sprint.sprintName }}</span>
+                  </mat-option>
+            </mat-select>
+          </mat-form-field>
+      
+         <mat-card-actions>
+         <button mat-raised-button color="primary"  (click) = "closeDialog()" type="submit"[disabled]="!sprintForm.form.valid">Save</button>
+         <a mat-button (click) = "closeDialog()">Cancel</a>
+       </mat-card-actions>
+    </form>
+    </mat-card>

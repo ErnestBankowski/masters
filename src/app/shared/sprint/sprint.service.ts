@@ -13,7 +13,7 @@ export class SprintService {
     return this.http.get(this.SPRINT_API + '/for/' + id);
   }
 
-  get(id: string) {
+  get(id: string): Observable<any>  {
     return this.http.get(this.SPRINT_API + '/' + id);
   }
 

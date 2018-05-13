@@ -18,15 +18,37 @@ public class UseCase {
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private long id;
 	
-	@Column(name="value")
-	String value;
-	
 	@ManyToOne
 	@JoinColumn(name="functionality")
 	Functionality functionality;
 	
-	@Column(name="isCompleted", columnDefinition = "boolean default false")
-	Boolean isCompleted;
+	@Column(name="title")
+	String title;
+	
+	public long getId() {
+		return id;
+	}
+
+	public String getTitle() {
+		return title;
+	}
+
+	public void setTitle(String title) {
+		this.title = title;
+	}
+
+	public void setId(long id) {
+		this.id = id;
+	}
+
+	public Functionality getFunctionality() {
+		return functionality;
+	}
+
+	public void setFunctionality(Functionality functionality) {
+		this.functionality = functionality;
+	}
+
 	
 	
 	

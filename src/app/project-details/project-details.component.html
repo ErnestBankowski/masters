@@ -1,143 +1,111 @@
-<mat-accordion>
-    <mat-expansion-panel 
-    (opened)="detailsOpen = true"
-    (closed)="detailsOpen = false">
-      <mat-expansion-panel-header>
-        <mat-panel-title>
-          Project details
-        </mat-panel-title>
-        <mat-panel-description>
-          Click to {{detailsOpen ? 'collapse' : 'expand'}}
-        </mat-panel-description>
-      </mat-expansion-panel-header>
-      <mat-list>
-          <mat-list-item><span><b>Project name </b></span> | {{project.projectName}}</mat-list-item>
-          <mat-divider></mat-divider>
-          <mat-list-item><span><b>Project manager </b></span> | {{project.projectOwnerId.email}}</mat-list-item>
-          <mat-divider></mat-divider>
-          <mat-list-item><span><b>Project start date </b></span> | {{project.projectStartTime}}</mat-list-item>
-          <mat-divider></mat-divider>
-          <mat-list-item><span><b>Project end date </b></span> | {{project.projectEndTime}}</mat-list-item>
-        </mat-list>
-      <p></p>
-    </mat-expansion-panel>
-
-    <mat-expansion-panel 
-    (opened)="participantsOpen = true"
-    (closed)="participantsOpen = false">
-      <mat-expansion-panel-header>
-        <mat-panel-title>
-          Project participants
-        </mat-panel-title>
-        <mat-panel-description>
-            Click to {{participantsOpen ? 'collapse' : 'expand'}}
-        </mat-panel-description>
-      </mat-expansion-panel-header>
-     
-      <div class="example-container mat-elevation-z8">
-          <mat-table #table [dataSource]="projectParticipants">
+<mat-card>
+    <h2>{{project.projectName}}</h2>
+    <mat-tab-group>
+        <mat-tab label="Details">
+            <mat-list>
+                <mat-list-item><b>Project manager </b>&emsp;{{project.projectOwnerId.email}}</mat-list-item>
+                <mat-divider></mat-divider>
+                <mat-list-item><b>Project start date </b>&emsp;{{project.projectStartTime}}</mat-list-item>
+                <mat-divider></mat-divider>
+                <mat-list-item><b>Project end date </b>&emsp;{{project.projectEndTime}}</mat-list-item>
+              </mat-list>
+        </mat-tab>
+        <mat-tab label="Participants">
+            <div class="example-container mat-elevation-z8">
+                <mat-table #table [dataSource]="projectParticipants">
+                    
+                  <!-- Name Column -->
+                  <ng-container matColumnDef="email">
+                    <mat-header-cell *matHeaderCellDef> Email </mat-header-cell>
+                    <mat-cell *matCellDef="let object"> {{object.email}} </mat-cell>
+                  </ng-container>
               
-            <!-- Name Column -->
-            <ng-container matColumnDef="email">
-              <mat-header-cell *matHeaderCellDef> Email </mat-header-cell>
-              <mat-cell *matCellDef="let object"> {{object.email}} </mat-cell>
-            </ng-container>
-        
-            <!-- Weight Column -->
-            <ng-container matColumnDef="role">
-              <mat-header-cell *matHeaderCellDef> Role </mat-header-cell>
-              <mat-cell *matCellDef="let object"> {{object.role}} </mat-cell>
-            </ng-container>
-        
-            <!-- Symbol Column -->
-            <ng-container matColumnDef="enrollTime">
-              <mat-header-cell *matHeaderCellDef> Since </mat-header-cell>
-              <mat-cell *matCellDef="let object"> {{object.enrollTime}} </mat-cell>
-            </ng-container>
-        
-            <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
-            <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
-          </mat-table>
-        </div>
-
-      <form #projectForm="ngForm" (ngSubmit)="saveParticipant(projectForm.value)">
-         <!-- <mat-form-field>
-            <input type="text" matInput name = "userr"  [(ngModel)]="userr" [matAutocomplete]="auto" [formControl]="userControl" >
-            <mat-autocomplete #auto="matAutocomplete">
-              <mat-option *ngFor="let user of filteredUsers | async" [value]="user.email">
-                <span>{{ user.email }}</span>
-              </mat-option>
-            </mat-autocomplete>
-          </mat-form-field>
-        -->
-        <mat-form-field>
-            <mat-select placeholder="User"  name = "participant"  [(ngModel)]="participant">
-                <mat-option *ngFor="let user of users" [value]="user.email">
-                    <span>{{ user.email }}</span>
-                  </mat-option>
-            </mat-select>
-          </mat-form-field>
-
-          <mat-form-field>
-              <mat-select placeholder="Role"  name = "role"  [(ngModel)]="role">
-                  <mat-option *ngFor="let role of roles" [value]="role.role">
-                      <span>{{ role.role }}</span>
-                    </mat-option>
-              </mat-select>
-            </mat-form-field>
+                  <!-- Weight Column -->
+                  <ng-container matColumnDef="role">
+                    <mat-header-cell *matHeaderCellDef> Role </mat-header-cell>
+                    <mat-cell *matCellDef="let object"> {{object.role}} </mat-cell>
+                  </ng-container>
+              
+                  <!-- Symbol Column -->
+                  <ng-container matColumnDef="enrollTime">
+                    <mat-header-cell *matHeaderCellDef> Since </mat-header-cell>
+                    <mat-cell *matCellDef="let object"> {{object.enrollTime}} </mat-cell>
+                  </ng-container>
+              
+                  <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+                  <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+                </mat-table>
+              </div>
       
-            <input matInput value = {{project.id}} name = "project"  [(ngModel)]="project.id" hidden>          
-       
-            <mat-card-actions>
-                <button mat-raised-button color="primary" type="submit">Save</button>
-              </mat-card-actions>
-      </form>
-
-    </mat-expansion-panel>
-
-    <mat-expansion-panel 
-    (opened)="sprintsOpen = true"
-    (closed)="sprintsOpen = false">
-        <mat-expansion-panel-header>
-          <mat-panel-title>
-            Project sprints
-          </mat-panel-title>
-          <mat-panel-description>
-              Click to {{sprintsOpen ? 'collapse' : 'expand'}}
-          </mat-panel-description>
-        </mat-expansion-panel-header>
-        
-        <div class="example-container mat-elevation-z8">
-            <mat-table #table [dataSource]="sprints">
-                
-              <!-- Name Column -->
-              <ng-container matColumnDef="name">
-                <mat-header-cell *matHeaderCellDef> Name </mat-header-cell>
-                <mat-cell *matCellDef="let sprint">  <a mat-button [routerLink]="['/sprint-details', sprint.id]">{{sprint.name}}</a></mat-cell>
-              </ng-container>
-          
-              <!-- Weight Column -->
-              <ng-container matColumnDef="creator">
-                <mat-header-cell *matHeaderCellDef> Creator </mat-header-cell>
-                <mat-cell *matCellDef="let sprint"> {{sprint.creator}} </mat-cell>
-              </ng-container>
-          
-              <!-- Symbol Column -->
-              <ng-container matColumnDef="start">
-                <mat-header-cell *matHeaderCellDef> Start Date </mat-header-cell>
-                <mat-cell *matCellDef="let sprint"> {{sprint.start}} </mat-cell>
-              </ng-container>
-          
-                            <!-- Symbol Column -->
-              <ng-container matColumnDef="end">
-                 <mat-header-cell *matHeaderCellDef> End Date </mat-header-cell>
-                <mat-cell *matCellDef="let sprint"> {{sprint.end}} </mat-cell>
-               </ng-container>
-
-              <mat-header-row *matHeaderRowDef="sprintColumns"></mat-header-row>
-              <mat-row *matRowDef="let row; columns: sprintColumns;"></mat-row>
-            </mat-table>
-          </div>
-          <button mat-raised-button (click)="openCreateSprintDialog()">Add sprint</button>
-      </mat-expansion-panel>
-  </mat-accordion>
+            <form #projectForm="ngForm" (ngSubmit)="saveParticipant(projectForm.value)">
+               <!-- <mat-form-field>
+                  <input type="text" matInput name = "userr"  [(ngModel)]="userr" [matAutocomplete]="auto" [formControl]="userControl" >
+                  <mat-autocomplete #auto="matAutocomplete">
+                    <mat-option *ngFor="let user of filteredUsers | async" [value]="user.email">
+                      <span>{{ user.email }}</span>
+                    </mat-option>
+                  </mat-autocomplete>
+                </mat-form-field>
+              -->
+              <mat-form-field>
+                  <mat-select placeholder="User"  name = "participant"  [(ngModel)]="participant">
+                      <mat-option *ngFor="let user of users" [value]="user.email">
+                          <span>{{ user.email }}</span>
+                        </mat-option>
+                  </mat-select>
+                </mat-form-field>
+      
+                <mat-form-field>
+                    <mat-select placeholder="Role"  name = "role"  [(ngModel)]="role">
+                        <mat-option *ngFor="let role of roles" [value]="role.role">
+                            <span>{{ role.role }}</span>
+                          </mat-option>
+                    </mat-select>
+                  </mat-form-field>
+            
+                  <input matInput value = {{project.id}} name = "project"  [(ngModel)]="project.id" hidden>          
+             
+                  <mat-card-actions>
+                      <button mat-raised-button color="primary" type="submit">Save</button>
+                    </mat-card-actions>
+            </form>
+        </mat-tab>
+        <mat-tab label="Sprints">
+            <div class="example-container mat-elevation-z8">
+                <mat-table #table [dataSource]="sprints">
+                    
+                  <!-- Name Column -->
+                  <ng-container matColumnDef="name">
+                    <mat-header-cell *matHeaderCellDef> Name </mat-header-cell>
+                    <mat-cell *matCellDef="let sprint">  <a mat-button [routerLink]="['/sprint-details', sprint.id]">{{sprint.name}}</a></mat-cell>
+                  </ng-container>
+              
+                  <!-- Weight Column -->
+                  <ng-container matColumnDef="creator">
+                    <mat-header-cell *matHeaderCellDef> Creator </mat-header-cell>
+                    <mat-cell *matCellDef="let sprint"> {{sprint.creator}} </mat-cell>
+                  </ng-container>
+              
+                  <!-- Symbol Column -->
+                  <ng-container matColumnDef="start">
+                    <mat-header-cell *matHeaderCellDef> Start Date </mat-header-cell>
+                    <mat-cell *matCellDef="let sprint"> {{sprint.start}} </mat-cell>
+                  </ng-container>
+              
+                                <!-- Symbol Column -->
+                  <ng-container matColumnDef="end">
+                     <mat-header-cell *matHeaderCellDef> End Date </mat-header-cell>
+                    <mat-cell *matCellDef="let sprint"> {{sprint.end}} </mat-cell>
+                   </ng-container>
+    
+                  <mat-header-row *matHeaderRowDef="sprintColumns"></mat-header-row>
+                  <mat-row *matRowDef="let row; columns: sprintColumns;"></mat-row>
+                </mat-table>
+              </div>
+              <button mat-raised-button (click)="openCreateSprintDialog()">Add sprint</button>
+        </mat-tab>
+        <mat-tab label="Functionalities">
+            <button mat-raised-button (click)="openCreateFunctionalityDialog()">Create new</button>
+        </mat-tab>
+      </mat-tab-group>
+</mat-card>
