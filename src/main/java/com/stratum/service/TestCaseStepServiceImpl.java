@@ -45,7 +45,7 @@ public class TestCaseStepServiceImpl implements TestCaseStepService{
 	}
 
 	@Override
-	public List<Functionality> getAllForUsecase(Long id) {
+	public List<TestCaseStep> getAllForUsecase(Long id) {
 		return testCaseStepRepository.getAllForUsecase(id);
 	}
 

@@ -35,6 +35,7 @@ import { FunctionalityEditComponent } from './functionality-edit/functionality-e
 import { FunctionalityDetailsComponent } from './functionality-details/functionality-details.component';
 import { SpecificationEditComponent } from './specification-edit/specification-edit.component';
 import { UsecaseEditComponent } from './usecase-edit/usecase-edit.component';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 
 const config = {
   issuer: 'https://dev-531715.oktapreview.com/oauth2/default',
@@ -85,6 +86,14 @@ const appRoutes: Routes = [
     component: FunctionalityEditComponent
   },
   {
+    path: 'specification-edit/:id',
+    component: SpecificationEditComponent
+  },
+  {
+    path: 'usecase-edit/:id',
+    component: UsecaseEditComponent
+  },
+  {
     path: 'implicit/callback',
     component: OktaCallbackComponent
   },
@@ -127,6 +136,7 @@ const appRoutes: Routes = [
     MatFormFieldModule,
     MatSelectModule,
     MatTableModule,
+    MatSnackBarModule,
 	  OktaAuthModule.initAuth(config)
   ],
   providers: [ProjectService, UserService, SprintService, FunctionalityService, GiphyService, {provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true}],

@@ -1,3 +1,12 @@
-<p>
-  specification-edit works!
-</p>
+<mat-card>
+  <form #specificationForm="ngForm" (ngSubmit)="save(specificationForm.value)">
+    <input matInput value = {{functionality}} name = "functionality" [(ngModel)]="functionality" hidden>   
+    <mat-form-field>
+      <textarea  [(ngModel)]="value" required name="value" #name matInput placeholder="Enter specification"></textarea>
+    </mat-form-field>
+       <mat-card-actions>
+       <button mat-raised-button color="primary"  (click) = "closeDialog()" type="submit"[disabled]="!specificationForm.form.valid">Save</button>
+       <a mat-button (click) = "closeDialog()">Cancel</a>
+     </mat-card-actions>
+  </form>
+  </mat-card>  

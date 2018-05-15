@@ -11,6 +11,6 @@ import com.stratum.model.TestCaseStep;
 public interface TestCaseStepRepository extends JpaRepository<TestCaseStep, Long>{
 
 	@Query(value = "select * from test_case_step where usecase = ?1", nativeQuery = true)
-	public List<Functionality> getAllForUsecase(Long id);
+	public List<TestCaseStep> getAllForUsecase(Long id);
 	
 }

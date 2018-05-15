@@ -25,6 +25,19 @@ public class UseCase {
 	@Column(name="title")
 	String title;
 	
+	@ManyToOne
+	@JoinColumn(name="creator")
+	User creator;
+	
+	
+	public User getCreator() {
+		return creator;
+	}
+
+	public void setCreator(User creator) {
+		this.creator = creator;
+	}
+
 	public long getId() {
 		return id;
 	}

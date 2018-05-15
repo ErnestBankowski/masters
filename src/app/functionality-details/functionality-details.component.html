@@ -14,9 +14,29 @@
     </mat-list>
   </mat-tab>
   <mat-tab label="Specification">
+      <mat-card class="example-card">
+          <mat-card-header>
+            <div mat-card-avatar class="example-header-image"></div>
+            <mat-card-title>Specification</mat-card-title>
+            <mat-card-subtitle>Created by: {{specification.creator.email}}</mat-card-subtitle>
+          </mat-card-header>
+          <mat-card-content>
+              <p>{{specification.value}}</p>
+          </mat-card-content>
+        </mat-card>
      <button mat-raised-button color="primary" (click)="createSpecification()" type="submit">Edit</button>
   </mat-tab>
   <mat-tab label="Use Case">
+      <mat-card class="example-card">
+        <mat-card-header>
+          <div mat-card-avatar class="example-header-image"></div>
+          <mat-card-title>{{usecase.title}}</mat-card-title>
+          <mat-card-subtitle>Created by: {{usecase.creator.email}}</mat-card-subtitle>
+        </mat-card-header>
+        <mat-card-content>
+            <p>{{usecase.value}}</p>
+        </mat-card-content>
+      </mat-card>
       <button mat-raised-button color="primary" (click)="createUseCase()" type="submit">Edit</button>
   </mat-tab>
   <mat-tab label="Time Entries">

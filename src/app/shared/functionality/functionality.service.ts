@@ -34,6 +34,18 @@ export class FunctionalityService {
     return this.http.get(this.FUNCTIONALITY_API + '/' + id);
   }
 
+  getSpecification(id: string) {
+    return this.http.get(this.SPECIFICATION_API + '/for/' + id);
+  }
+
+  getUseCase(id: string) {
+    return this.http.get(this.USECASE_API + '/for/' + id);
+  }
+
+  getTestSteps(id: string) {
+    return this.http.get(this.USECASE_API + '/step/for/' + id);
+  }
+
   save(functionality: any): Observable<any> {
     let result: Observable<Object>;
     if (functionality['id']) {
@@ -60,6 +72,16 @@ export class FunctionalityService {
       result = this.http.put(this.USECASE_API, usecase);
     } else {
       result = this.http.post(this.USECASE_API, usecase);
+    }
+    return result;
+  }
+
+  saveTestStep(teststep: any): Observable<any> {
+    let result: Observable<Object>;
+    if (teststep['id']) {
+      result = this.http.put(this.USECASE_API, teststep);
+    } else {
+      result = this.http.post(this.USECASE_API, teststep);
     }
     return result;
   }

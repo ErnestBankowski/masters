@@ -25,6 +25,43 @@ public class Specification {
 	@JoinColumn(name="functionality")
 	Functionality functionality;
 	
-	@Column(name="isCompleted", columnDefinition = "boolean default false")
-	Boolean isCompleted;
+	@ManyToOne
+	@JoinColumn(name="creator")
+	User creator;
+
+	public long getId() {
+		return id;
+	}
+
+	public void setId(long id) {
+		this.id = id;
+	}
+
+	public String getValue() {
+		return value;
+	}
+
+	public void setValue(String value) {
+		this.value = value;
+	}
+
+	public Functionality getFunctionality() {
+		return functionality;
+	}
+
+	public void setFunctionality(Functionality functionality) {
+		this.functionality = functionality;
+	}
+
+	public User getCreator() {
+		return creator;
+	}
+
+	public void setCreator(User creator) {
+		this.creator = creator;
+	}
+	
+	
+	
+
 }

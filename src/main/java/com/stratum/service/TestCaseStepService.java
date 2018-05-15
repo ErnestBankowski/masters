@@ -7,5 +7,5 @@ import com.stratum.model.TestCaseStep;
 
 public interface TestCaseStepService extends DataService<TestCaseStep, Long>{
 
-	public List<Functionality> getAllForUsecase(Long id);
+	public List<TestCaseStep> getAllForUsecase(Long id);
 }
