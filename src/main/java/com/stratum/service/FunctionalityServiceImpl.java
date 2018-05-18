@@ -47,4 +47,9 @@ public class FunctionalityServiceImpl implements FunctionalityService{
 		return functionalityRepository.getAllForSprint(id);
 	}
 
+	@Override
+	public List<Functionality> getAllForUser(String email) {
+		return functionalityRepository.getAllForUser(email);
+	}
+
 }

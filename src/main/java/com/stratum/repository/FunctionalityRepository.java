@@ -11,5 +11,8 @@ public interface FunctionalityRepository extends JpaRepository<Functionality, Lo
 
 	@Query(value = "select * from functionality where sprint = ?1", nativeQuery = true)
 	public List<Functionality> getAllForSprint(Long id);
+
+	@Query(value = "select * from functionality where responsible_architect = ?1 or responsible_developer = ?1 or responsible_tester = ?1", nativeQuery = true)
+	public List<Functionality> getAllForUser(String email);
 	
 }

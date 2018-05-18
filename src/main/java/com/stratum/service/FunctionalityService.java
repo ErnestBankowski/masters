@@ -7,5 +7,6 @@ import com.stratum.model.Functionality;
 public interface FunctionalityService extends DataService<Functionality, Long>{
 
 	List<Functionality> getAllForSprint(long id);
+	List<Functionality> getAllForUser(String email);
 
 }

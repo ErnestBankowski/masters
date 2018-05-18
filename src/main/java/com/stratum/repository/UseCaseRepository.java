@@ -10,7 +10,7 @@ import com.stratum.model.UseCase;
 
 public interface UseCaseRepository extends JpaRepository<UseCase, Long>{
 
-	@Query(value = "select * from use_case where functionality = ?1", nativeQuery = true)
+	@Query(value = "select * from usecase where functionality = ?1", nativeQuery = true)
 	public List<UseCase> getForFunctionality(Long id);
 	
 }

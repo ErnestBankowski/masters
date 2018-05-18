@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.util.UriComponentsBuilder;
 
 import com.stratum.model.Functionality;
 import com.stratum.model.TestCaseStep;
@@ -62,6 +63,7 @@ public class UseCaseController {
 				UseCase useCase = new UseCase();
 				useCase.setFunctionality(maybeFunctionality.get());
 				useCase.setTitle("Usecase for "+maybeFunctionality.get().getName());
+				useCase.setCreator(maybeLoggedUser.get());
 				useCaseService.save(useCase);
 				return new ResponseEntity<Void>(HttpStatus.CREATED);
 			} else {
@@ -103,4 +105,10 @@ public class UseCaseController {
 		}
 		return new ResponseEntity<List<TestCaseStep>>(HttpStatus.NOT_FOUND);
 	}
+	
+	@RequestMapping(value = "/step", method = RequestMethod.PUT)
+	public ResponseEntity<Void> updateTestStep(@RequestBody TestCaseStep step, UriComponentsBuilder ucBuilder) {
+		testCaseStepService.save(step);
+		return new ResponseEntity<Void>(HttpStatus.ACCEPTED);
+	} 
 }

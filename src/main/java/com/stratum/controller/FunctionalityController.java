@@ -44,11 +44,22 @@ public class FunctionalityController {
 	public ResponseEntity<List<Functionality>> getFunctionalitiesForSprint(@PathVariable("id") long id) {
 		Optional<Sprint> maybeSprint = sprintService.getOne(id);
 		if (maybeSprint.isPresent()) {
-			List<Functionality> allForSprint = functionalityService.list();
-					// functionalityService.getAllForSprint(maybeSprint.get().getId());
+			List<Functionality> allForSprint = functionalityService.getAllForSprint(maybeSprint.get().getId());
 			return new ResponseEntity<List<Functionality>>(allForSprint, HttpStatus.OK);
 		}
 		return new ResponseEntity<List<Functionality>>(HttpStatus.NOT_FOUND);
+	}
+	
+	@RequestMapping(method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<List<Functionality>> getFunctionalityForUser(OAuth2Authentication auth) {
+		Optional<User> maybeLoggedUser = sessionService.findLoggedUser(auth);
+		if (maybeLoggedUser.isPresent()) {
+			functionalityService.getAllForUser(maybeLoggedUser.get().getEmail());
+			HttpHeaders headers = new HttpHeaders();
+			return new ResponseEntity<List<Functionality>>(headers, HttpStatus.CREATED);
+		} else {
+			return new ResponseEntity<List<Functionality>>(HttpStatus.UNAUTHORIZED);
+		}
 	}
 	
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
@@ -84,6 +95,6 @@ public class FunctionalityController {
 	@RequestMapping(method = RequestMethod.PUT)
 	public ResponseEntity<Void> updateFunctionality(@RequestBody Functionality functionality, UriComponentsBuilder ucBuilder) {
 		functionalityService.save(functionality);
-		return null;
+		return new ResponseEntity<Void>(HttpStatus.ACCEPTED);
 	} 
 }

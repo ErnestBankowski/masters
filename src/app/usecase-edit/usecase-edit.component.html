@@ -1,6 +1,9 @@
 <mat-card>
     <form #usecaseForm="ngForm" (ngSubmit)="save(usecaseForm.value)">
-      <input matInput value = {{functionality}} name = "functionality" [(ngModel)]="functionality" hidden>   
+      <input matInput value = {{usecase}} name = "usecase" [(ngModel)]="usecase" hidden>   
+      <mat-form-field>
+        <textarea  [(ngModel)]="value" required name="value" #name matInput placeholder="Enter step"></textarea>
+      </mat-form-field>
          <mat-card-actions>
          <button mat-raised-button color="primary"  (click) = "closeDialog()" type="submit"[disabled]="!usecaseForm.form.valid">Save</button>
          <a mat-button (click) = "closeDialog()">Cancel</a>

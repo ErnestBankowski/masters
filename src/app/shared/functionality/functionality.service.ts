@@ -16,6 +16,12 @@ export enum FunctionalityState {
   WITHDRAWN ="WITHDRAWN",
 }
 
+export enum TestCaseState {
+  NEW = "NEW",
+  FAILED ="FAILED",
+  PASSED ="PASSED"
+}
+
 @Injectable()
 export class FunctionalityService {
   public API = '//localhost:8080';
@@ -42,7 +48,7 @@ export class FunctionalityService {
     return this.http.get(this.USECASE_API + '/for/' + id);
   }
 
-  getTestSteps(id: string) {
+  getTestSteps(id: string): Observable<any> {
     return this.http.get(this.USECASE_API + '/step/for/' + id);
   }
 
@@ -79,9 +85,9 @@ export class FunctionalityService {
   saveTestStep(teststep: any): Observable<any> {
     let result: Observable<Object>;
     if (teststep['id']) {
-      result = this.http.put(this.USECASE_API, teststep);
+      result = this.http.put(this.USECASE_API+"/step", teststep);
     } else {
-      result = this.http.post(this.USECASE_API, teststep);
+      result = this.http.post(this.USECASE_API+"/step", teststep);
     }
     return result;
   }

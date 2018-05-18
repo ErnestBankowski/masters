@@ -2,8 +2,8 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { MatTabsModule } from '@angular/material/tabs';
 import { Subscription } from 'rxjs/Subscription';
 import { ActivatedRoute, Router } from '@angular/router';
-import { FunctionalityService } from '../shared/functionality/functionality.service'
-import { FunctionalityState } from '../shared/functionality/functionality.service'
+import { FunctionalityService, FunctionalityState, TestCaseState } from '../shared/functionality/functionality.service';
+import { ProjectService } from '../shared/project/project.service';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { UsecaseEditComponent } from '../usecase-edit/usecase-edit.component';
 import { SpecificationEditComponent } from '../specification-edit/specification-edit.component';
@@ -20,12 +20,15 @@ export class FunctionalityDetailsComponent implements OnInit, OnDestroy {
   functionality: any = {};
   specification: any = {};
   usecase: any = {};
+  testSteps: any[] = [];
+  users: any[] = [];
   sub: Subscription;
   
   constructor(
     private route: ActivatedRoute,
     private router: Router,
-    private functionalityService: FunctionalityService,    
+    private functionalityService: FunctionalityService,  
+    private projectService: ProjectService,  
     public createSpecificationDialog: MatDialog,
     public createUseCaseDialog: MatDialog,
     public createUseCaseStepDialog: MatDialog,
@@ -43,7 +46,13 @@ export class FunctionalityDetailsComponent implements OnInit, OnDestroy {
         this.functionalityService.get(id).subscribe((functionality: any) => {
           if (functionality) {
             this.functionality = functionality;
-            this.functionality.href = functionality._links.self.href;
+            this.projectService.getParticipants(this.functionality.sprint.project.id).subscribe(data => {
+              var temp: any[] = [];
+              for (const fetchedParticipant of data) {
+                temp.push({email: fetchedParticipant.participant.email, role: fetchedParticipant.role, enrollTime: fetchedParticipant.enrollTime});
+              }
+              this.users = temp;
+            });    
           }
         });
 
@@ -57,7 +66,11 @@ export class FunctionalityDetailsComponent implements OnInit, OnDestroy {
         this.functionalityService.getUseCase(id).subscribe((usecase: any) => {
           if (usecase) {
             this.usecase = usecase;
-            this.usecase.href = usecase._links.self.href;
+            this.functionalityService.getTestSteps(this.usecase.id).subscribe(data => {
+              for (const step of data) {
+                this.testSteps.push(step);
+              }
+            });
           }
         });
       }
@@ -67,7 +80,7 @@ export class FunctionalityDetailsComponent implements OnInit, OnDestroy {
 
   promote() {
     if(this.functionality.state == FunctionalityState.NEW) {
-      if(!this.specification.id && !this.usecase.id) {
+      if(!this.specification.id || !this.usecase.id) {
         this.snackBar.open('You have to create specification and use case in order to proceed.', 'close', {
           duration: 5000
         });
@@ -75,8 +88,10 @@ export class FunctionalityDetailsComponent implements OnInit, OnDestroy {
       }
       this.functionality.state = FunctionalityState.SPECIFIED;
     } else if(this.functionality.state == FunctionalityState.SPECIFIED ) {
-      this.snackBar.open('You have to assign users in order to proceed.');
-      //return; 
+      this.snackBar.open('You have to assign stakeholders in order to proceed.', 'close', {
+        duration: 5000
+      });
+      return;
 
     }
     this.functionalityService.save(this.functionality).subscribe(result => {
@@ -84,9 +99,8 @@ export class FunctionalityDetailsComponent implements OnInit, OnDestroy {
   } 
 
   createUseCase() {
-    let dialogRef = this.createUseCaseDialog.open(UsecaseEditComponent, {
-      data: { id: this.functionality.id }
-    });
+    this.functionalityService.saveUsecase({ functionality: this.functionality.id }).subscribe(result => {
+    }, error => console.error(error));
   }
 
   createSpecification() {
@@ -97,12 +111,24 @@ export class FunctionalityDetailsComponent implements OnInit, OnDestroy {
 
   createUsecaseStep() {
     let dialogRef = this.createUseCaseStepDialog.open(UsecaseEditComponent, {
-      data: { id: this.functionality.id }
+      data: { functionality: this.functionality.id, usecase: this.usecase.id }
     });
   }
   
   ngOnDestroy() {
     this.sub.unsubscribe();
+  }
+
+  approveUc(teststep) {
+    teststep.testResult = TestCaseState.PASSED;
+    this.functionalityService.saveTestStep(teststep).subscribe(result => {
+    }, error => console.error(error));
+  }
+
+  failUc(teststep) {
+    teststep.testResult = TestCaseState.FAILED;
+    this.functionalityService.saveTestStep(teststep).subscribe(result => {
+    }, error => console.error(error));
   }
 
 }

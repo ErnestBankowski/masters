@@ -13,6 +13,7 @@ import { FunctionalityService } from '../shared/functionality/functionality.serv
 })
 export class UsecaseEditComponent implements OnInit, OnDestroy {
   functionality: any;
+  usecase: any;
   sprints: any[] = [];
 
   constructor(
@@ -22,7 +23,8 @@ export class UsecaseEditComponent implements OnInit, OnDestroy {
     private sprintService: SprintService,
     public dialogRef: MatDialogRef<UsecaseEditComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any) { 
-      this.functionality = data.id;
+      this.functionality = data.functionality;
+      this.usecase = data.usecase;
     }
 
   ngOnInit() {
@@ -41,7 +43,7 @@ export class UsecaseEditComponent implements OnInit, OnDestroy {
   }
 
   save(form: NgForm) {
-    this.functionalityService.saveUsecase(form).subscribe(result => {
+    this.functionalityService.saveTestStep(form).subscribe(result => {
       this.gotoList();
     }, error => console.error(error));
   }
