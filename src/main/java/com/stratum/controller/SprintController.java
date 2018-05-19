@@ -62,6 +62,16 @@ public class SprintController {
 		return new ResponseEntity<List<Sprint>>(HttpStatus.NOT_FOUND);
 	}
 	
+	@RequestMapping(method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<List<Sprint>> getSprintsForUser(OAuth2Authentication auth) {
+		Optional<User> maybeLoggedUser = sessionService.findLoggedUser(auth);
+		if (maybeLoggedUser.isPresent()) {
+			List<Sprint> sprints = sprintService.getForUser(maybeLoggedUser.get().getEmail());
+			return new ResponseEntity<List<Sprint>>(sprints, HttpStatus.OK);
+		}
+		return new ResponseEntity<List<Sprint>>(HttpStatus.UNAUTHORIZED);
+	}
+	
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Sprint> getSprintById(@PathVariable("id") long id) {
 		Optional<Sprint> maybeSprint = sprintService.getOne(id);

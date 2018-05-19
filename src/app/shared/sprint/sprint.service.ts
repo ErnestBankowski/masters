@@ -17,6 +17,10 @@ export class SprintService {
     return this.http.get(this.SPRINT_API + '/' + id);
   }
 
+  getForUser(): Observable<any> {
+    return this.http.get(this.SPRINT_API);
+  }
+
   save(sprint: any): Observable<any> {
     let result: Observable<Object>;
     if (sprint['href']) {

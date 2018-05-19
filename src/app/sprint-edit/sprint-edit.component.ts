@@ -26,7 +26,7 @@ export class SprintEditComponent implements OnInit, OnDestroy {
   }
 
   gotoList() {
-    this.router.navigateByUrl('/project-list', {skipLocationChange: true}).then(()=>
+    this.router.navigateByUrl('/home', {skipLocationChange: true}).then(()=>
     this.router.navigate(['/project-details/'+this.project]));
   }
 

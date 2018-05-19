@@ -9,6 +9,7 @@ import { UsecaseEditComponent } from '../usecase-edit/usecase-edit.component';
 import { SpecificationEditComponent } from '../specification-edit/specification-edit.component';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { UserRoles } from '../shared/project/project.service';
 
 @Component({
   selector: 'app-functionality-details',
@@ -21,7 +22,9 @@ export class FunctionalityDetailsComponent implements OnInit, OnDestroy {
   specification: any = {};
   usecase: any = {};
   testSteps: any[] = [];
-  users: any[] = [];
+  testers: any[] = [];
+  architects: any[] = [];
+  developers: any[] = [];
   sub: Subscription;
   
   constructor(
@@ -47,13 +50,20 @@ export class FunctionalityDetailsComponent implements OnInit, OnDestroy {
           if (functionality) {
             this.functionality = functionality;
             this.projectService.getParticipants(this.functionality.sprint.project.id).subscribe(data => {
-              var temp: any[] = [];
               for (const fetchedParticipant of data) {
-                temp.push({email: fetchedParticipant.participant.email, role: fetchedParticipant.role, enrollTime: fetchedParticipant.enrollTime});
-              }
-              this.users = temp;
+                if(fetchedParticipant.role == UserRoles.ARCHITECT) {
+                  this.architects.push({email: fetchedParticipant.participant.email, role: fetchedParticipant.role, enrollTime: fetchedParticipant.enrollTime});                 
+                } else if(fetchedParticipant.role == UserRoles.DEVELOPER) {
+                  this.developers.push({email: fetchedParticipant.participant.email, role: fetchedParticipant.role, enrollTime: fetchedParticipant.enrollTime});   
+                } else if(fetchedParticipant.role == UserRoles.TESTER) {
+                  this.testers.push({email: fetchedParticipant.participant.email, role: fetchedParticipant.role, enrollTime: fetchedParticipant.enrollTime});               
+                }
+              } 
             });    
           }
+          if(!this.functionality.responsibleArchitect) this.functionality.responsibleArchitect = {};
+          if(!this.functionality.responsibleDeveloper) this.functionality.responsibleDeveloper = {};
+          if(!this.functionality.responsibleTester) this.functionality.responsibleTester = {};
         });
 
         this.functionalityService.getSpecification(id).subscribe((specification: any) => {
@@ -81,26 +91,89 @@ export class FunctionalityDetailsComponent implements OnInit, OnDestroy {
   promote() {
     if(this.functionality.state == FunctionalityState.NEW) {
       if(!this.specification.id || !this.usecase.id) {
-        this.snackBar.open('You have to create specification and use case in order to proceed.', 'close', {
+        this.snackBar.open('You have to create specification and use case in order to proceed!', 'close', {
           duration: 5000
         });
         return;
       }
       this.functionality.state = FunctionalityState.SPECIFIED;
     } else if(this.functionality.state == FunctionalityState.SPECIFIED ) {
-      this.snackBar.open('You have to assign stakeholders in order to proceed.', 'close', {
-        duration: 5000
-      });
-      return;
-
+      if(!this.functionality.responsibleArchitect.email || !this.functionality.responsibleDeveloper.email || !this.functionality.responsibleTester.email) {
+        this.snackBar.open('You have to assign stakeholders in order to proceed!', 'close', {
+          duration: 5000
+        });
+        return;
+      }
+      this.functionality.state = FunctionalityState.ASSIGNED;
+    } else if(this.functionality.state == FunctionalityState.ASSIGNED ) {
+      this.functionality.state = FunctionalityState.IN_DEVELOPMENT;
+    } else if(this.functionality.state == FunctionalityState.IN_DEVELOPMENT ) {
+      this.functionality.state = FunctionalityState.IN_TESTING;
+    } else if(this.functionality.state == FunctionalityState.IN_TESTING ) {
+      var hasFailedTests = false;
+      var hasPendingTests = false;
+      for(var i = 0; i < this.testSteps.length; i++) {
+        if(this.testSteps[i].testResult == TestCaseState.FAILED) hasFailedTests = true;
+        if(this.testSteps[i].testResult == TestCaseState.NEW) hasPendingTests = true;
+      }
+      if(hasPendingTests) {
+        this.snackBar.open('All test cases has to be validated before proceeding!', 'close', {
+          duration: 5000
+        });
+        return;
+      } else if(hasFailedTests) {
+        this.functionality.state = FunctionalityState.IN_DEVELOPMENT;
+      } else {
+        this.functionality.state = FunctionalityState.UNDER_REVIEW;
+      }
+    } else if(this.functionality.state == FunctionalityState.UNDER_REVIEW ) {
+      this.functionality.state = FunctionalityState.COMPLETED;
     }
     this.functionalityService.save(this.functionality).subscribe(result => {
     }, error => console.error(error));
+    setTimeout(() => {
+      this.gotoList();
+    }, 500);
+   
   } 
+
+  assignUsers(architectEmail, developerEmail, testerEmail) {
+    if(architectEmail){
+      for(var i = 0; i < this.architects.length; i ++) {
+        if(this.architects[i].email == architectEmail) {
+          this.functionality.responsibleArchitect = this.architects[i];
+        }
+      }
+    } 
+    if(developerEmail){
+      for(var i = 0; i < this.developers.length; i ++) {
+        if(this.developers[i].email == developerEmail) {
+          this.functionality.responsibleDeveloper = this.developers[i];
+        }
+      }
+    }
+    if(testerEmail){
+      for(var i = 0; i < this.testers.length; i ++) {
+        if(this.testers[i].email == testerEmail) {
+          this.functionality.responsibleTester = this.testers[i];
+        }
+      }
+    }
+    this.functionalityService.save(this.functionality).subscribe(result => {
+    }, error => console.error(error));
+  }
+
+  gotoList() {
+    this.router.navigateByUrl('/home', {skipLocationChange: true}).then(()=>
+    this.router.navigate(['/functionality-details/'+this.functionality.id]));
+  }
 
   createUseCase() {
     this.functionalityService.saveUsecase({ functionality: this.functionality.id }).subscribe(result => {
     }, error => console.error(error));
+    setTimeout(() => {
+      this.gotoList();
+    }, 500);
   }
 
   createSpecification() {

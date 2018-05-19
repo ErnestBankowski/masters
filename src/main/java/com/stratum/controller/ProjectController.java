@@ -66,6 +66,16 @@ public class ProjectController {
 		}
 		return new ResponseEntity<Project>(HttpStatus.NOT_FOUND);
 	}
+	
+	@RequestMapping(method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<List<Project>> getProjectForUser(OAuth2Authentication auth) {
+		Optional<User> maybeLoggedUser = sessionService.findLoggedUser(auth);
+		if (maybeLoggedUser.isPresent()) {
+			List<Project> projects = projectService.getForUser(maybeLoggedUser.get().getEmail());
+			return new ResponseEntity<List<Project>>(projects, HttpStatus.OK);
+		}
+		return new ResponseEntity<List<Project>>(HttpStatus.UNAUTHORIZED);
+	}
 
 	@RequestMapping(method = RequestMethod.POST)
 	public ResponseEntity<Void> createProject(OAuth2Authentication auth, @RequestBody Project project, UriComponentsBuilder ucBuilder) {

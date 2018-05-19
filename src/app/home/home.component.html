@@ -1,4 +1,157 @@
-<mat-card>
-  <mat-card-content>
-  </mat-card-content>
-</mat-card>
+<mat-accordion *ngIf="isAuthenticated">
+    <mat-expansion-panel (opened)="functionalitiesOpenState = true"
+                         (closed)="functionalitiesOpenState = false">
+      <mat-expansion-panel-header>
+        <mat-panel-title>
+          Your functionalities
+        </mat-panel-title>
+        <mat-panel-description>
+          {{functionalitiesOpenState ? 'click to collapse' : 'click to expand'}}
+        </mat-panel-description>
+      </mat-expansion-panel-header>
+      <mat-card>
+          <mat-table #table [dataSource]="functionalities">
+              
+            <ng-container matColumnDef="id">
+              <mat-header-cell *matHeaderCellDef> ID </mat-header-cell>
+              <mat-cell *matCellDef="let functionality">  <a mat-button [routerLink]="['/functionality-details', functionality.id]">{{functionality.id}}</a></mat-cell>
+            </ng-container>
+        
+            <ng-container matColumnDef="name">
+              <mat-header-cell *matHeaderCellDef> Name </mat-header-cell>
+              <mat-cell *matCellDef="let functionality"> <a mat-button [routerLink]="['/functionality-details', functionality.id]">{{functionality.name}}</a></mat-cell>
+            </ng-container>
+        
+            <ng-container matColumnDef="state">
+              <mat-header-cell *matHeaderCellDef> State </mat-header-cell>
+              <mat-cell *matCellDef="let functionality"> {{functionality.state}} </mat-cell>
+            </ng-container>
+        
+            <ng-container matColumnDef="project">
+                <mat-header-cell *matHeaderCellDef> Project </mat-header-cell>
+                <mat-cell *matCellDef="let functionality"> <a mat-button [routerLink]="['/project-details', functionality.sprint.project.id]">{{functionality.sprint.project.projectName}}</a></mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="sprint">
+                <mat-header-cell *matHeaderCellDef> Sprint </mat-header-cell>
+                <mat-cell *matCellDef="let functionality"> <a mat-button [routerLink]="['/sprint-details', functionality.sprint.id]">{{functionality.sprint.sprintName}}</a></mat-cell>
+              </ng-container>
+
+            <ng-container matColumnDef="creator">
+              <mat-header-cell *matHeaderCellDef> Creator </mat-header-cell>
+              <mat-cell *matCellDef="let functionality"> {{functionality.creator.email}} </mat-cell>
+            </ng-container>
+        
+            <ng-container matColumnDef="creationDate">
+              <mat-header-cell *matHeaderCellDef> Created </mat-header-cell>
+              <mat-cell *matCellDef="let functionality"> {{functionality.creationDate}} </mat-cell>
+            </ng-container>
+        
+            <mat-header-row *matHeaderRowDef="functionalityColumns"></mat-header-row>
+            <mat-row *matRowDef="let row; columns: functionalityColumns;"></mat-row>
+          </mat-table>
+        </mat-card>
+    </mat-expansion-panel>
+
+    <mat-expansion-panel (opened)="sprintsOpenState = true"
+                         (closed)="sprintsOpenState = false">
+      <mat-expansion-panel-header>
+      <mat-panel-title>
+      Your sprints
+      </mat-panel-title>
+      <mat-panel-description>
+      {{sprintsOpenState ? 'click to collapse' : 'click to expand'}}
+      </mat-panel-description>
+      </mat-expansion-panel-header>
+      <mat-card>
+      <mat-table #table [dataSource]="sprints">
+
+      <ng-container matColumnDef="id">
+      <mat-header-cell *matHeaderCellDef> ID </mat-header-cell>
+      <mat-cell *matCellDef="let sprint">  <a mat-button [routerLink]="['/sprint-details', sprint.id]">{{sprint.id}}</a></mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="name">
+      <mat-header-cell *matHeaderCellDef> Name </mat-header-cell>
+      <mat-cell *matCellDef="let sprint"> <a mat-button [routerLink]="['/sprint-details', sprint.id]">{{sprint.name}}</a></mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="creator">
+      <mat-header-cell *matHeaderCellDef> Creator </mat-header-cell>
+      <mat-cell *matCellDef="let sprint"> {{sprint.creator.email}} </mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="project">
+      <mat-header-cell *matHeaderCellDef> Project </mat-header-cell>
+      <mat-cell *matCellDef="let sprint"> <a mat-button [routerLink]="['/project-details', sprint.project.id]">{{sprint.project.projectName}}</a></mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="start">
+      <mat-header-cell *matHeaderCellDef> Start time </mat-header-cell>
+      <mat-cell *matCellDef="let sprint"> {{sprint.start}} </mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="end">
+      <mat-header-cell *matHeaderCellDef> End time </mat-header-cell>
+      <mat-cell *matCellDef="let sprint"> {{sprint.end}} </mat-cell>
+      </ng-container>
+
+      <mat-header-row *matHeaderRowDef="sprintColumns"></mat-header-row>
+      <mat-row *matRowDef="let row; columns: sprintColumns;"></mat-row>
+      </mat-table>
+      </mat-card>
+    </mat-expansion-panel>
+
+    <mat-expansion-panel (opened)="projectsOpenState = true"
+                         (closed)="projectsOpenState = false">
+      <mat-expansion-panel-header>
+      <mat-panel-title>
+      Your projects
+      </mat-panel-title>
+      <mat-panel-description>
+      {{projectsOpenState ? 'click to collapse' : 'click to expand'}}
+      </mat-panel-description>
+      </mat-expansion-panel-header>
+      <mat-card>
+        <mat-table #table [dataSource]="projects">
+
+        <ng-container matColumnDef="id">
+        <mat-header-cell *matHeaderCellDef> ID </mat-header-cell>
+        <mat-cell *matCellDef="let project">  <a mat-button [routerLink]="['/project-details', project.id]">{{project.id}}</a></mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="name">
+        <mat-header-cell *matHeaderCellDef> Name </mat-header-cell>
+        <mat-cell *matCellDef="let project"> <a mat-button [routerLink]="['/project-details', project.id]">{{project.name}}</a></mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="owner">
+        <mat-header-cell *matHeaderCellDef> Project Owner </mat-header-cell>
+        <mat-cell *matCellDef="let project"> {{project.owner.email}} </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="start">
+        <mat-header-cell *matHeaderCellDef> Start time </mat-header-cell>
+        <mat-cell *matCellDef="let project"> {{project.start}} </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="end">
+        <mat-header-cell *matHeaderCellDef> End time </mat-header-cell>
+        <mat-cell *matCellDef="let project"> {{project.end}} </mat-cell>
+        </ng-container>
+
+        <mat-header-row *matHeaderRowDef="projectColumns"></mat-header-row>
+        <mat-row *matRowDef="let row; columns: projectColumns;"></mat-row>
+        </mat-table>
+        <button mat-raised-button (click)="openCreateProjectDialog()">Create Your own project.</button>
+      </mat-card>
+
+    </mat-expansion-panel>
+  </mat-accordion>
+
+
+
+
+
+
+

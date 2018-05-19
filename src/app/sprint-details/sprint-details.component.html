@@ -4,7 +4,7 @@
       <mat-tab label="Details">
         <mat-list>
             <mat-list-item> <b>Project</b>&emsp;<a mat-button [routerLink]="['/project-details', sprint.project.id]">{{sprint.project.projectName}}</a></mat-list-item>
-            <mat-list-item> <b>Creator</b>&emsp;</mat-list-item>
+            <mat-list-item> <b>Creator</b>&emsp;{{sprint.creator.email}}</mat-list-item>
             <mat-list-item> <b>Start date</b>&emsp;{{sprint.sprintStartTime}}</mat-list-item>
             <mat-list-item> <b>End Date</b>&emsp;{{sprint.sprintEndTime}}</mat-list-item>
         </mat-list>
@@ -20,7 +20,7 @@
             
                 <ng-container matColumnDef="name">
                   <mat-header-cell *matHeaderCellDef> Name </mat-header-cell>
-                  <mat-cell *matCellDef="let functionality"> {{functionality.name}}</mat-cell>
+                  <mat-cell *matCellDef="let functionality"> <a mat-button [routerLink]="['/functionality-details', functionality.id]">{{functionality.name}}</a></mat-cell>
                 </ng-container>
             
                 <ng-container matColumnDef="state">

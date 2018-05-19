@@ -36,8 +36,16 @@ export class FunctionalityService {
     return this.http.get(this.FUNCTIONALITY_API + '/for/' + id);
   }
 
+  getForUser(): Observable<any> {
+    return this.http.get(this.FUNCTIONALITY_API);
+  }
+
   get(id: string) {
     return this.http.get(this.FUNCTIONALITY_API + '/' + id);
+  }
+
+  getForProject(id: string): Observable<any> {
+    return this.http.get(this.FUNCTIONALITY_API + '/project/' + id);
   }
 
   getSpecification(id: string) {
@@ -54,6 +62,9 @@ export class FunctionalityService {
 
   save(functionality: any): Observable<any> {
     let result: Observable<Object>;
+    if(!functionality.responsibleArchitect || !functionality.responsibleArchitect.email) functionality.responsibleArchitect = null;
+    if(!functionality.responsibleDeveloper || !functionality.responsibleDeveloper.email) functionality.responsibleDeveloper = null;
+    if(!functionality.responsibleTester || !functionality.responsibleTester.email) functionality.responsibleTester = null;
     if (functionality['id']) {
       result = this.http.put(this.FUNCTIONALITY_API, functionality);
     } else {

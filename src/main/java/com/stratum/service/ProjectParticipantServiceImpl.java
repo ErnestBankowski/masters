@@ -48,9 +48,17 @@ public class ProjectParticipantServiceImpl implements ProjectParticipantService{
 		return false;
 	}
 	
+	@Override
 	public List<ProjectParticipant> getAllForProject(Long id) {
 		return projectParticipantRepository.getAllForProject(id);
 	}
+
+	@Override
+	public List<ProjectParticipant> getAllForUser(String email) {
+		return projectParticipantRepository.getAllForUser(email);
+	}
+	
+	
 
 	
 

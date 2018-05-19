@@ -1,8 +1,11 @@
 package com.stratum.service;
 
+import java.util.List;
+
 import com.stratum.model.Project;
-import com.stratum.model.ProjectParticipant;
 
 public interface ProjectService extends DataService<Project, Long>{
+	
+	public List<Project> getForUser(String email);
 	
 }

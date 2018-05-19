@@ -15,6 +15,7 @@ import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { SprintEditComponent } from '../sprint-edit/sprint-edit.component';
 import { ProjectEditComponent } from '../project-edit/project-edit.component';
 import { FunctionalityEditComponent } from '../functionality-edit/functionality-edit.component';
+import { FunctionalityService } from '../shared/functionality/functionality.service';
 
 export class User {
   constructor(public email: string) { }
@@ -37,16 +38,19 @@ export class ProjectDetailsComponent implements OnInit, OnDestroy{
   users: any[] = [];
   projectParticipants: any[] = [];
   sprints: any[] = [];
+  functionalities: any[] = [];
   roles: Role[] = [{role: "Project Manager"}, {role: "Architect"}, {role: "Developer"}, {role: "Tester"}];
   displayedColumns = ['email', 'role', 'enrollTime'];
   sprintColumns = ['name', 'creator', 'start', 'end'];
-
+  functionalityColumns = ['id', 'name', 'state', 'sprint', 'creator', 'creationDate'];
+  
   constructor(
     private route: ActivatedRoute,
     private router: Router,
     private projectService: ProjectService, 
     private userService: UserService, 
     private sprintService: SprintService, 
+    private functionalityService: FunctionalityService,
     public createSprintDialog: MatDialog,
     public createFunctionalityDialog: MatDialog) {
       this.filteredUsers = this.userControl.valueChanges
@@ -88,16 +92,17 @@ export class ProjectDetailsComponent implements OnInit, OnDestroy{
 
     this.sprintService.getAll(id).subscribe(data => {
       var temp: any[] = [];
-      for (const fetchedSprint of data) {
+      for (var fetchedSprint of data) {
         temp.push({
           id: fetchedSprint.id,
           name: fetchedSprint.sprintName,
           creator: fetchedSprint.creator.email, 
           start: fetchedSprint.sprintStartTime, 
-          end: fetchedSprint.sprintEndTime});
+          end: fetchedSprint.sprintEndTime});        
       }
       this.sprints = temp;
     });
+
 
     this.userService.getAll().subscribe(data => {
       for (const fetchedUser of data) {
@@ -105,7 +110,19 @@ export class ProjectDetailsComponent implements OnInit, OnDestroy{
       }
     });
 
-
+    this.functionalityService.getForProject(id).subscribe(data => {
+      var temp: any[] = [];
+      for (const func of data) {
+        temp.push({
+          id: func.id,
+          name: func.name,
+          creator: func.creator, 
+          state: func.state, 
+          creationDate: func.creationDate,
+          sprint: func.sprint});        
+      }
+      this.functionalities = temp;
+    });
   }
 
   ngOnDestroy() {
@@ -119,7 +136,8 @@ export class ProjectDetailsComponent implements OnInit, OnDestroy{
   }
 
   gotoList() {
-    this.router.navigate(['/project-list']);
+    this.router.navigateByUrl('/home', {skipLocationChange: true}).then(()=>
+    this.router.navigate(['/project-details/'+this.project.id]));
   }
 
   openCreateSprintDialog() {

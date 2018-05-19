@@ -21,9 +21,11 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import com.stratum.dto.FunctionalityDTO;
 import com.stratum.model.Functionality;
+import com.stratum.model.Project;
 import com.stratum.model.Sprint;
 import com.stratum.model.User;
 import com.stratum.service.FunctionalityService;
+import com.stratum.service.ProjectService;
 import com.stratum.service.SessionService;
 import com.stratum.service.SprintService;
 
@@ -37,6 +39,9 @@ public class FunctionalityController {
 	
 	@Autowired
 	SprintService sprintService;
+	
+	@Autowired
+	ProjectService projectService;
 	
 	@Autowired SessionService sessionService;
 	
@@ -54,12 +59,21 @@ public class FunctionalityController {
 	public ResponseEntity<List<Functionality>> getFunctionalityForUser(OAuth2Authentication auth) {
 		Optional<User> maybeLoggedUser = sessionService.findLoggedUser(auth);
 		if (maybeLoggedUser.isPresent()) {
-			functionalityService.getAllForUser(maybeLoggedUser.get().getEmail());
-			HttpHeaders headers = new HttpHeaders();
-			return new ResponseEntity<List<Functionality>>(headers, HttpStatus.CREATED);
+			List<Functionality> allForUser = functionalityService.getAllForUser(maybeLoggedUser.get().getEmail());
+			return new ResponseEntity<List<Functionality>>(allForUser, HttpStatus.CREATED);
 		} else {
 			return new ResponseEntity<List<Functionality>>(HttpStatus.UNAUTHORIZED);
 		}
+	}
+	
+	@RequestMapping(value = "/project/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<List<Functionality>> getFunctionalitiesForProject(@PathVariable("id") long id) {
+		Optional<Project> maybeProject = projectService.getOne(id);
+		if (maybeProject.isPresent()) {
+			List<Functionality> allForProject = functionalityService.getAllForProject(maybeProject.get().getId());
+			return new ResponseEntity<List<Functionality>>(allForProject, HttpStatus.OK);
+		}
+		return new ResponseEntity<List<Functionality>>(HttpStatus.NOT_FOUND);
 	}
 	
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)

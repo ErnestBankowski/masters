@@ -14,7 +14,7 @@ export class ProjectListComponent implements OnInit {
 
   projects: Array<any>;
 
-  constructor(private projectService: ProjectService, private giphyService: GiphyService, public createProjectDialog: MatDialog) { }
+  constructor(private projectService: ProjectService, private giphyService: GiphyService) { }
 
   ngOnInit() {
     this.projectService.getAll().subscribe(data => {
@@ -24,9 +24,4 @@ export class ProjectListComponent implements OnInit {
       }
     });
   }
-
-  openCreateProjectDialog() {
-    let dialogRef = this.createProjectDialog.open(ProjectEditComponent);
-  }
-
 }

@@ -2,6 +2,13 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs/Observable';
 
+export enum UserRoles {
+  PROJECT_MANAGER = "Project Manager",
+  DEVELOPER ="Developer",
+  ARCHITECT ="Architect",
+  TESTER = "Tester"
+}
+
 @Injectable()
 export class ProjectService {
   public API = '//localhost:8080';
@@ -9,8 +16,13 @@ export class ProjectService {
 
   constructor(private http: HttpClient) { }
 
+
   getAll(): Observable<any> {
     return this.http.get('//localhost:8080/project');
+  }
+
+  getForUser(): Observable<any> {
+    return this.http.get(this.PROJECT_API);
   }
 
   get(id: string) {

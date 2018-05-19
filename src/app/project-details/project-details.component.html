@@ -105,6 +105,43 @@
               <button mat-raised-button (click)="openCreateSprintDialog()">Add sprint</button>
         </mat-tab>
         <mat-tab label="Functionalities">
+            <div class="example-container mat-elevation-z8">
+                <mat-table #table [dataSource]="functionalities">
+                    
+                  <ng-container matColumnDef="id">
+                    <mat-header-cell *matHeaderCellDef> ID </mat-header-cell>
+                    <mat-cell *matCellDef="let functionality">  <a mat-button [routerLink]="['/functionality-details', functionality.id]">{{functionality.id}}</a></mat-cell>
+                  </ng-container>
+              
+                  <ng-container matColumnDef="name">
+                    <mat-header-cell *matHeaderCellDef> Name </mat-header-cell>
+                    <mat-cell *matCellDef="let functionality"> <a mat-button [routerLink]="['/functionality-details', functionality.id]">{{functionality.name}}</a></mat-cell>
+                  </ng-container>
+              
+                  <ng-container matColumnDef="state">
+                    <mat-header-cell *matHeaderCellDef> State </mat-header-cell>
+                    <mat-cell *matCellDef="let functionality"> {{functionality.state}} </mat-cell>
+                  </ng-container>
+              
+                  <ng-container matColumnDef="sprint">
+                      <mat-header-cell *matHeaderCellDef> Sprint </mat-header-cell>
+                      <mat-cell *matCellDef="let functionality"> <a mat-button [routerLink]="['/sprint-details', functionality.sprint.id]">{{functionality.sprint.sprintName}}</a></mat-cell>
+                    </ng-container>
+
+                  <ng-container matColumnDef="creator">
+                    <mat-header-cell *matHeaderCellDef> Creator </mat-header-cell>
+                    <mat-cell *matCellDef="let functionality"> {{functionality.creator.email}} </mat-cell>
+                  </ng-container>
+              
+                  <ng-container matColumnDef="creationDate">
+                     <mat-header-cell *matHeaderCellDef> Created </mat-header-cell>
+                    <mat-cell *matCellDef="let functionality"> {{functionality.creationDate}} </mat-cell>
+                   </ng-container>
+              
+                  <mat-header-row *matHeaderRowDef="functionalityColumns"></mat-header-row>
+                  <mat-row *matRowDef="let row; columns: functionalityColumns;"></mat-row>
+                </mat-table>
+              </div>
             <button mat-raised-button (click)="openCreateFunctionalityDialog()">Create new</button>
         </mat-tab>
       </mat-tab-group>

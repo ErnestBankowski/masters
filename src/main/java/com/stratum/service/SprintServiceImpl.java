@@ -1,11 +1,13 @@
 package com.stratum.service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.stratum.model.Project;
 import com.stratum.model.Sprint;
 import com.stratum.repository.SprintRepository;
 
@@ -14,6 +16,9 @@ public class SprintServiceImpl implements SprintService{
 
 	@Autowired
 	SprintRepository sprintRepository;
+	
+	@Autowired
+	ProjectService projectService;
 	
 	@Override
 	public List<Sprint> list() {
@@ -45,6 +50,16 @@ public class SprintServiceImpl implements SprintService{
 	@Override
 	public List<Sprint> getAllForProject(Long id) {
 		return sprintRepository.getAllForProject(id);
+	}
+
+	@Override
+	public List<Sprint> getForUser(String email) {
+		List<Sprint> sprints = new ArrayList<>();
+		List<Project> projects = projectService.getForUser(email);
+		for(Project project : projects) {
+			sprints.addAll(sprintRepository.getAllForProject(project.getId()));
+		}
+		return sprints;
 	}
 
 }

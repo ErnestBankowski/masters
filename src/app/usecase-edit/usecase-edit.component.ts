@@ -31,12 +31,13 @@ export class UsecaseEditComponent implements OnInit, OnDestroy {
   }
 
   gotoList() {
-    this.router.navigateByUrl('/project-list', {skipLocationChange: true}).then(()=>
+    this.router.navigateByUrl('/home', {skipLocationChange: true}).then(()=>
     this.router.navigate(['/functionality-details/'+this.functionality]));
   }
 
   closeDialog() {
     this.dialogRef.close();
+    this.gotoList();
   }
 
   ngOnDestroy() {

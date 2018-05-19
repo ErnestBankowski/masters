@@ -48,8 +48,9 @@ export class ProjectEditComponent implements OnInit, OnDestroy {
   }
 
   gotoList() {
-    this.router.navigate(['/project-list']);
     this.dialogRef.close();
+    this.router.navigateByUrl('/project-list', {skipLocationChange: true}).then(()=>
+    this.router.navigate(['/home/']));
   }
 
   save(form: NgForm) {
@@ -60,6 +61,7 @@ export class ProjectEditComponent implements OnInit, OnDestroy {
 
   closeDialog() {
     this.dialogRef.close();
+    this.gotoList();
   }
 
   remove(href) {
