@@ -24,6 +24,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import com.stratum.messaging.MailClient;
 import com.stratum.model.Project;
 import com.stratum.model.ProjectParticipant;
 import com.stratum.model.User;
@@ -48,6 +49,9 @@ public class ProjectController {
 
 	@Autowired
 	SessionService sessionService;
+	
+	@Autowired 
+	MailClient mailClient;
 
 	@RequestMapping(method = RequestMethod.GET)
 	public ResponseEntity<List<Project>> listProjects() {
@@ -90,6 +94,9 @@ public class ProjectController {
 					.date(new Date(System.currentTimeMillis()))
 					.build();
 			projectParticipantService.save(participant);
+			mailClient.prepareAndSend(maybeLoggedUser.get().getEmail(), 
+					"Project "+project.getProjectName()+" created", 
+					"You have successfully created a project. You are now Project Manager of "+project.getProjectName());
 			HttpHeaders headers = new HttpHeaders();
 			headers.setLocation(ucBuilder.path("/{id}").buildAndExpand(project.getId()).toUri());
 			return new ResponseEntity<Void>(headers, HttpStatus.CREATED);
@@ -114,6 +121,9 @@ public class ProjectController {
 					.date(enrollTime)
 					.build();
 			projectParticipantService.save(participant);
+			mailClient.prepareAndSend(participant.getParticipant().getEmail(), 
+					"You have joined project: "+participant.getProject().getProjectName(), 
+					"You are now a member of project "+participant.getProject().getProjectName()+". Your role is: "+participant.getRole());
 			HttpHeaders headers = new HttpHeaders();
 			return new ResponseEntity<Void>(headers, HttpStatus.CREATED);
 		}

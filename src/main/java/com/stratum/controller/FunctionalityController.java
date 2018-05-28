@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import com.stratum.dto.FunctionalityDTO;
+import com.stratum.messaging.MailClient;
 import com.stratum.model.Functionality;
 import com.stratum.model.Project;
 import com.stratum.model.Sprint;
@@ -44,6 +45,9 @@ public class FunctionalityController {
 	ProjectService projectService;
 	
 	@Autowired SessionService sessionService;
+	
+	@Autowired 
+	MailClient mailClient;
 	
 	@RequestMapping(value = "/for/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<List<Functionality>> getFunctionalitiesForSprint(@PathVariable("id") long id) {
@@ -109,6 +113,28 @@ public class FunctionalityController {
 	@RequestMapping(method = RequestMethod.PUT)
 	public ResponseEntity<Void> updateFunctionality(@RequestBody Functionality functionality, UriComponentsBuilder ucBuilder) {
 		functionalityService.save(functionality);
+		if(functionality.getResponsibleArchitect() !=null){
+		mailClient.prepareAndSend(functionality.getResponsibleArchitect().getEmail(), 
+				"Functionality: "+functionality.getId()+" - "+functionality.getName()+" updated.", 
+				"Functionality: "+functionality.getId()+" - "+functionality.getName()+" updated. You received this message because You are the responsible Architect. \n"
+						+ "Functionality is now in state: "+functionality.getState()+"\n" 
+						+ "This functionality is assigned to sprint: "+functionality.getSprint().getId()+ " - "+functionality.getSprint().getSprintName()+" of project: "+functionality.getSprint().getProject().getProjectName());
+		}
+		if(functionality.getResponsibleDeveloper() !=null){
+		mailClient.prepareAndSend(functionality.getResponsibleDeveloper().getEmail(), 
+				"Functionality: "+functionality.getId()+" - "+functionality.getName()+" updated.", 
+				"Functionality: "+functionality.getId()+" - "+functionality.getName()+" updated. You received this message because You are the responsible Developer. \n"
+						+ "Functionality is now in state: "+functionality.getState()+"\n" 
+						+ "This functionality is assigned to sprint: "+functionality.getSprint().getId()+ " - "+functionality.getSprint().getSprintName()+" of project: "+functionality.getSprint().getProject().getProjectName());
+		}
+		if(functionality.getResponsibleTester() !=null){
+		mailClient.prepareAndSend(functionality.getResponsibleTester().getEmail(), 
+				"Functionality: "+functionality.getId()+" - "+functionality.getName()+" updated.", 
+				"Functionality: "+functionality.getId()+" - "+functionality.getName()+" updated. You received this message because You are the responsible Tester. \n"
+						+ "Functionality is now in state: "+functionality.getState()+"\n" 
+						+ "This functionality is assigned to sprint: "+functionality.getSprint().getId()+ " - "+functionality.getSprint().getSprintName()+" of project: "+functionality.getSprint().getProject().getProjectName());
+		}
+		
 		return new ResponseEntity<Void>(HttpStatus.ACCEPTED);
 	} 
 }

@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import com.stratum.messaging.MailClient;
 import com.stratum.model.Functionality;
 import com.stratum.model.TestCaseStep;
 import com.stratum.model.UseCase;
@@ -42,6 +43,9 @@ public class UseCaseController {
 	
 	@Autowired
 	SessionService sessionService;
+	
+	@Autowired 
+	MailClient mailClient;
 	
 	@RequestMapping(value = "/for/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<UseCase> getUsecaseForFunctionality(@PathVariable("id") long id) {

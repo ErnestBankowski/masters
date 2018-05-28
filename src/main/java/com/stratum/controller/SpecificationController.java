@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import com.stratum.messaging.MailClient;
 import com.stratum.model.Functionality;
 import com.stratum.model.Specification;
 import com.stratum.model.User;
@@ -35,6 +36,9 @@ public class SpecificationController {
 	
 	@Autowired
 	SessionService sessionService;
+	
+	@Autowired 
+	MailClient mailClient;
 	
 	@RequestMapping(value = "/for/{id}", method = RequestMethod.GET)
 	public ResponseEntity<Specification> getAllForFunctionality(@PathVariable("id") long id) {
