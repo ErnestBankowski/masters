@@ -26,6 +26,7 @@ export class FunctionalityDetailsComponent implements OnInit, OnDestroy {
   architects: any[] = [];
   developers: any[] = [];
   sub: Subscription;
+  canBePromoted: any;
   
   constructor(
     private route: ActivatedRoute,

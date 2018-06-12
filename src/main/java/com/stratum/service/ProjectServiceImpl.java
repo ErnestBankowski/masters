@@ -57,6 +57,5 @@ public class ProjectServiceImpl implements ProjectService{
 			projects.add(participant.getProject());
 		}
 		return new ArrayList<Project>(projects);
-	}
-	
+	}	
 }

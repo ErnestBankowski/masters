@@ -16,4 +16,7 @@ public interface ProjectParticipantRepository extends JpaRepository<ProjectParti
 	
 	@Query(value = "select * from project_participant where participant =?1", nativeQuery = true)
 	public List<ProjectParticipant> getAllForUser(String email);
+	
+	@Query(value = "select * from project_participant where project =?1 and participant =?2", nativeQuery = true)
+	public List<ProjectParticipant> getParticipantEntriesForProject(Long id, String email);
 }

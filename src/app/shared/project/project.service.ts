@@ -16,7 +16,6 @@ export class ProjectService {
 
   constructor(private http: HttpClient) { }
 
-
   getAll(): Observable<any> {
     return this.http.get('//localhost:8080/project');
   }
@@ -47,6 +46,10 @@ export class ProjectService {
 
   getParticipants(id: string) : Observable<any>{
     return this.http.get(this.PROJECT_API + '/participants/' + id);
+  }
+
+  getUserRoles(id: string): Observable<any> {
+    return this.http.get(this.PROJECT_API + '/roles/' + id);
   }
 
   remove(href: string) {

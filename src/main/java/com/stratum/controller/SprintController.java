@@ -93,9 +93,11 @@ public class SprintController {
 		Optional<Project> maybeProject = projectService.getOne(Integer.toUnsignedLong((Integer) data.get("project")));
 		if (maybeLoggedUser.isPresent() && maybeProject.isPresent()) {
 			String sprintName = (String) data.get("sprintName");
-			DateFormat df = new SimpleDateFormat("dd-MM-yyyy"); 			    
-			Date startDate = df.parse((String) data.get("sprintStartTime"));
-			Date endDate =  df.parse((String) data.get("sprintEndTime"));
+			DateFormat df = new SimpleDateFormat("yyyy-MM-dd"); 			    
+			String start = ((String) data.get("sprintStartTime")).substring(0, 10);
+			String end = ((String) data.get("sprintEndTime")).substring(0, 10);
+			Date startDate = df.parse( ((String) data.get("sprintStartTime")).substring(0, 10));
+			Date endDate =  df.parse( ((String) data.get("sprintEndTime")).substring(0, 10));
 			Sprint sprint = new Sprint.SprintBuilder()
 					.name(sprintName)
 					.project(maybeProject.get())

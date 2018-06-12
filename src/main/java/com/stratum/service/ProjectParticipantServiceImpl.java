@@ -1,17 +1,14 @@
 package com.stratum.service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Example;
-import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Service;
 
-import com.stratum.model.Project;
 import com.stratum.model.ProjectParticipant;
 import com.stratum.repository.ProjectParticipantRepository;
-import com.stratum.repository.ProjectRepository;
 
 @Service
 public class ProjectParticipantServiceImpl implements ProjectParticipantService{
@@ -56,6 +53,16 @@ public class ProjectParticipantServiceImpl implements ProjectParticipantService{
 	@Override
 	public List<ProjectParticipant> getAllForUser(String email) {
 		return projectParticipantRepository.getAllForUser(email);
+	}
+
+	@Override
+	public List<String> getUserRoles(String email, Long id) {
+		List<String> roles = new ArrayList<>();
+		List<ProjectParticipant> entries = projectParticipantRepository.getParticipantEntriesForProject(id, email);
+		for(ProjectParticipant participant : entries) {
+			roles.add(participant.getRole());
+		}
+		return roles;
 	}
 	
 	

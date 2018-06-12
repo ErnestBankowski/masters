@@ -43,7 +43,9 @@ export class ProjectDetailsComponent implements OnInit, OnDestroy{
   displayedColumns = ['email', 'role', 'enrollTime'];
   sprintColumns = ['name', 'creator', 'start', 'end'];
   functionalityColumns = ['id', 'name', 'state', 'sprint', 'creator', 'creationDate'];
-  
+  userRoles: any[] = [];
+  isProjectManager: any;
+
   constructor(
     private route: ActivatedRoute,
     private router: Router,
@@ -78,6 +80,10 @@ export class ProjectDetailsComponent implements OnInit, OnDestroy{
             console.log(`Project with id '${id}' not found, returning to list`);
             this.gotoList();
           }
+        });
+
+        this.projectService.getUserRoles(id).subscribe(data => {
+          this.isProjectManager = (data.indexOf("Project Manager") > -1);     
         });
       }
     });

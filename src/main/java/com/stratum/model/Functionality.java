@@ -2,6 +2,7 @@ package com.stratum.model;
 
 import java.util.Date;
 
+import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -10,6 +11,8 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 @Entity
 @Table(name="functionality")
@@ -24,6 +27,8 @@ public class Functionality {
 	@JoinColumn(name="sprint")
 	private Sprint sprint;
 	
+	@Basic
+	@Temporal(TemporalType.DATE)
 	@Column(name="creation_date")
 	private Date creationDate;
 	

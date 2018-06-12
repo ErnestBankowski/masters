@@ -26,11 +26,6 @@
                 *ngIf="project.href" type="button">Delete</button>
         <a mat-button routerLink="/project-list" (click) = "closeDialog()">Cancel</a>
       </mat-card-actions>
-      <mat-card-footer>
-        <div class="giphy">
-          <img src="{{project.giphyUrl}}" alt="{{project.projectName}}">
-        </div>
-      </mat-card-footer>
     </form>
 
   </mat-card>

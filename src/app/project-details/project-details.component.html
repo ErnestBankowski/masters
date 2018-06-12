@@ -37,7 +37,7 @@
                 </mat-table>
               </div>
       
-            <form #projectForm="ngForm" (ngSubmit)="saveParticipant(projectForm.value)">
+            <form #projectForm="ngForm" (ngSubmit)="saveParticipant(projectForm.value)" *ngIf="isProjectManager">
                <!-- <mat-form-field>
                   <input type="text" matInput name = "userr"  [(ngModel)]="userr" [matAutocomplete]="auto" [formControl]="userControl" >
                   <mat-autocomplete #auto="matAutocomplete">
@@ -66,7 +66,7 @@
                   <input matInput value = {{project.id}} name = "project"  [(ngModel)]="project.id" hidden>          
              
                   <mat-card-actions>
-                      <button mat-raised-button color="primary" type="submit">Save</button>
+                      <button mat-raised-button color="primary" type="submit">Assign</button>
                     </mat-card-actions>
             </form>
         </mat-tab>
@@ -102,7 +102,7 @@
                   <mat-row *matRowDef="let row; columns: sprintColumns;"></mat-row>
                 </mat-table>
               </div>
-              <button mat-raised-button (click)="openCreateSprintDialog()">Add sprint</button>
+              <button mat-raised-button *ngIf="isProjectManager" (click)="openCreateSprintDialog()">Add sprint</button>
         </mat-tab>
         <mat-tab label="Functionalities">
             <div class="example-container mat-elevation-z8">
@@ -142,7 +142,7 @@
                   <mat-row *matRowDef="let row; columns: functionalityColumns;"></mat-row>
                 </mat-table>
               </div>
-            <button mat-raised-button (click)="openCreateFunctionalityDialog()">Create new</button>
+            <button mat-raised-button *ngIf="isProjectManager" (click)="openCreateFunctionalityDialog()">Create new</button>
         </mat-tab>
       </mat-tab-group>
 </mat-card>

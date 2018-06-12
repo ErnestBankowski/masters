@@ -2,6 +2,7 @@ package com.stratum.model;
 
 import java.util.Date;
 
+import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -10,6 +11,8 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -33,7 +36,8 @@ public class ProjectParticipant {
 	@Column(name="role")
 	private String role;
 	
-	@DateTimeFormat(pattern = "dd/MM/yyyy HH:mm:ss")
+	@Basic
+	@Temporal(TemporalType.DATE)
 	@Column(name="enroll_time")
 	private Date enrollTime;
 	

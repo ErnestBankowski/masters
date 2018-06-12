@@ -139,6 +139,16 @@ public class ProjectController {
 		}
 		return new ResponseEntity<List<ProjectParticipant>>(HttpStatus.NOT_FOUND);
 	}
+	
+	@RequestMapping(value = "/roles/{id}", method = RequestMethod.GET)
+	public ResponseEntity<List<String>> getUserRoles(OAuth2Authentication auth, @PathVariable("id") long id) {
+		Optional<User> maybeLoggedUser = sessionService.findLoggedUser(auth);
+		if (maybeLoggedUser.isPresent()) {
+			List<String> roles = projectParticipantService.getUserRoles(maybeLoggedUser.get().getEmail(), id);
+			return new ResponseEntity<List<String>>(roles, HttpStatus.OK);
+		}			
+		return new ResponseEntity<List<String>>(HttpStatus.NOT_FOUND);	
+	}
  
 	
 	

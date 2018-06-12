@@ -8,5 +8,6 @@ public interface ProjectParticipantService extends DataService<ProjectParticipan
 
 	public List<ProjectParticipant> getAllForProject(Long id);
 	public List<ProjectParticipant> getAllForUser(String email);
+	public List<String> getUserRoles(String email, Long id);
 
 }
