@@ -18,8 +18,7 @@ public class MailClient {
     @Autowired
     MailContentBuilder contentBuilder;
  
-    public void prepareAndSend(String recipient, String subject, String message) {
-    	System.out.println("About to send email to: "+recipient);
+    public void prepareAndSend(String recipient, String subject, String message) throws MailException {
         MimeMessagePreparator messagePreparator = mimeMessage -> {
             MimeMessageHelper messageHelper = new MimeMessageHelper(mimeMessage);
             messageHelper.setFrom(new InternetAddress("ryansimmons7@gmail.com", "Stratum Application"));
@@ -28,11 +27,7 @@ public class MailClient {
             String content = contentBuilder.build(subject, message);
             messageHelper.setText(content, true);
         };
-        try {
-            mailSender.send(messagePreparator);
-            System.out.println("Message sent.");
-        } catch (MailException e) {
-        }
+        mailSender.send(messagePreparator);
     }
  
 }

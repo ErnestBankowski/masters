@@ -91,14 +91,6 @@ export class FunctionalityDetailsComponent implements OnInit, OnDestroy {
 
   promote() {
     if(this.functionality.state == FunctionalityState.NEW) {
-      if(!this.specification.id || !this.usecase.id) {
-        this.snackBar.open('You have to create specification and use case in order to proceed!', 'close', {
-          duration: 5000
-        });
-        return;
-      }
-      this.functionality.state = FunctionalityState.SPECIFIED;
-    } else if(this.functionality.state == FunctionalityState.SPECIFIED ) {
       if(!this.functionality.responsibleArchitect.email || !this.functionality.responsibleDeveloper.email || !this.functionality.responsibleTester.email) {
         this.snackBar.open('You have to assign stakeholders in order to proceed!', 'close', {
           duration: 5000
@@ -106,6 +98,14 @@ export class FunctionalityDetailsComponent implements OnInit, OnDestroy {
         return;
       }
       this.functionality.state = FunctionalityState.ASSIGNED;
+    } else if(this.functionality.state == FunctionalityState.SPECIFIED ) {
+      if(!this.specification.id || !this.usecase.id) {
+        this.snackBar.open('You have to create specification and use case in order to proceed!', 'close', {
+          duration: 5000
+        });
+        return;
+      }
+      this.functionality.state = FunctionalityState.SPECIFIED;
     } else if(this.functionality.state == FunctionalityState.ASSIGNED ) {
       this.functionality.state = FunctionalityState.IN_DEVELOPMENT;
     } else if(this.functionality.state == FunctionalityState.IN_DEVELOPMENT ) {

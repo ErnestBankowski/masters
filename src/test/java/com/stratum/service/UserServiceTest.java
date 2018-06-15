@@ -1,73 +1,65 @@
 package com.stratum.service;
 
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
+import static org.assertj.core.api.Assertions.assertThat;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import java.util.Optional;
 
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.Mockito;
+import org.mockito.MockitoAnnotations;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import com.stratum.exception.ResourceNotFoundException;
+import com.stratum.model.User;
 import com.stratum.repository.UserRepository;
 
 @RunWith(SpringRunner.class)
+@SpringBootTest
 public class UserServiceTest {
+	
+	@InjectMocks
+	UserServiceImpl userService;
+	
+	@Mock
+	UserRepository userRepository;
 
-	private UserService userService;
-	private UserRepository userRepositoryMock;
-	
 	@Before
-	public void setUp() {
-		userService = new UserServiceImpl();
-		userRepositoryMock = mock(UserRepository.class);
+	public void initMocks() {
+		MockitoAnnotations.initMocks(this);
 	}
-	
-	/*@Test(expected = ResourceNotFoundException.class)
-	public void shouldThrowExceptionWhenNoUserWithRequestedIdFound() {
-		//when
-		when(userRepositoryMock.findById(10L)).thenReturn(Optional.empty());
-		//then
-		userService.getUserById(10L);
-	}
-	
+
 	@Test
-	public void shouldNotSaveUserWithEmptyId() {
-		//given
+	public void shouldReturnEmptyListIfNothingSaved() {
+		Mockito.when(userRepository.findAll()).thenReturn(Collections.EMPTY_LIST);
+		assertThat(userService.list()).isEmpty();
+	}
+
+	@Test
+	public void shouldReturnPopulatedListIfSaved() {
 		User user = new User();
-		user.setRoleId(1);
-		user.setUserDataId(1);
-		//when
-		
-		//then
+		user.setEmail("test");
+		Mockito.when(userRepository.findAll()).thenReturn(Collections.EMPTY_LIST);
+		assertThat(userService.list()).isEmpty();
+		userService.save(user);
+		List<User> userList = new ArrayList<>();
+		userList.add(user);
+		Mockito.when(userRepository.findAll()).thenReturn(userList);
+		assertThat(userService.list()).isNotEmpty();
 	}
-	
+
 	@Test
-	public void shouldNotSaveUserWithNoUserDetailsDefined() {
-		//given
-		
-		//when
-		
-		//then
+	public void shouldReturnUserIfSavedWithValidId() {
+		User user = new User();
+		user.setEmail("test");
+		Mockito.when(userRepository.findById("test")).thenReturn(Optional.of(user));
+		assertThat(userService.getOne("test").get()).isEqualTo(user);
 	}
-	
-	@Test
-	public void shouldNotSaveUserWithNoRoleDefined() {
-		//given
-		
-		//when
-		
-		//then
-	}
-	
-	@Test
-	public void shouldNotSaveUserIfIdAlreadyPresentInDatabase() {
-		//given
-		
-		//when
-		
-		//then
-	}*/
+
 }

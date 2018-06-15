@@ -81,13 +81,4 @@ public class Project {
 	public void setProjectName(String projectName) {
 		this.projectName = projectName;
 	}
-
-	@Override
-	public String toString() {
-		return "USER [id = "+id+"] "
-		+ "[projectOwnerEmail = "+projectOwner.getEmail()+"] "
-		+ "[projectStartTime = "+projectStartTime+"] "
-		+ "[projectEndTime = "+projectEndTime+"] "
-		+ "[projectName = "+projectName+"]";
-	}
 }
