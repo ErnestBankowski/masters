@@ -35,7 +35,6 @@ import com.stratum.service.UserService;
 
 @RestController
 @RequestMapping("/project")
-@CrossOrigin(origins = "http://localhost:4200")
 public class ProjectController {
 
 	@Autowired
