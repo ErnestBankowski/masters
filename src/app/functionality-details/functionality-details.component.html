@@ -5,20 +5,20 @@
     <mat-list>
         <mat-list-item> <b>Project</b>&emsp;<a mat-button [routerLink]="['/project-details', functionality.sprint.project.id]">{{functionality.sprint.project.projectName}}</a></mat-list-item>
         <mat-list-item> <b>Sprint</b>&emsp;<a mat-button [routerLink]="['/sprint-details', functionality.sprint.id]">{{functionality.sprint.sprintName}}</a></mat-list-item>
-        <mat-list-item> <b>State</b>&emsp;{{functionality.state}}&emsp;<button mat-raised-button color="primary" (click)="promote()" type="submit">Promote</button> </mat-list-item>
+        <mat-list-item> <b>State</b>&emsp;{{functionality.state}}&emsp;<button mat-raised-button color="primary" *ngIf="shouldBeAbleToPromote()" (click)="promote()" type="submit">Promote</button> </mat-list-item>
         <mat-list-item> <b>Creator</b>&emsp;{{functionality.creator.email}}</mat-list-item>
         <mat-list-item> <b>Creation Date</b>&emsp;{{functionality.creationDate}}</mat-list-item>
         <mat-list-item> <b>Assigned Architect</b>&emsp;{{functionality.responsibleArchitect.email}}&emsp;
-          <mat-form-field>
+          <mat-form-field *ngIf="isProjectManager">
               <mat-select placeholder="Architect"  name = "architect"  [(ngModel)]="architect">
-                  <mat-option *ngFor="let user of architects" [value]="user.email">
+                  <mat-option  *ngFor="let user of architects" [value]="user.email">
                       <span>{{ user.email }}</span>
                     </mat-option>
               </mat-select>
             </mat-form-field>
         </mat-list-item>
         <mat-list-item> <b>Assigned Developer</b>&emsp;{{functionality.responsibleDeveloper.email}}&emsp;
-          <mat-form-field>
+          <mat-form-field *ngIf="isProjectManager">
               <mat-select placeholder="Developer"  name = "developer"  [(ngModel)]="developer">
                   <mat-option *ngFor="let user of developers" [value]="user.email">
                       <span>{{ user.email }}</span>
@@ -27,7 +27,7 @@
             </mat-form-field>
         </mat-list-item>
         <mat-list-item> <b>Assigned Tester</b>&emsp;{{functionality.responsibleTester.email}}&emsp;
-          <mat-form-field>
+          <mat-form-field *ngIf="isProjectManager">
               <mat-select placeholder="Tester"  name = "tester"  [(ngModel)]="tester">
                   <mat-option *ngFor="let user of testers" [value]="user.email">
                       <span>{{ user.email }}</span>

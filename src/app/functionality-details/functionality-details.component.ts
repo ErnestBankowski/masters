@@ -26,7 +26,12 @@ export class FunctionalityDetailsComponent implements OnInit, OnDestroy {
   architects: any[] = [];
   developers: any[] = [];
   sub: Subscription;
-  canBePromoted: any;
+  canBePromoted: any;  
+  isProjectManager: any;
+  isArchitect: any;
+  isDeveloper: any;
+  isTester: any;
+
   
   constructor(
     private route: ActivatedRoute,
@@ -84,6 +89,13 @@ export class FunctionalityDetailsComponent implements OnInit, OnDestroy {
             });
           }
         });
+
+        this.projectService.getUserRoles(id).subscribe(data => {
+          this.isProjectManager = (data.indexOf("Project Manager") > -1);     
+          this.isArchitect = (data.indexOf("Architect") > -1);    
+          this.isDeveloper = (data.indexOf("Developer") > -1);    
+          this.isTester = (data.indexOf("Tester") > -1);    
+        });
       }
     });
 
@@ -98,7 +110,7 @@ export class FunctionalityDetailsComponent implements OnInit, OnDestroy {
         return;
       }
       this.functionality.state = FunctionalityState.ASSIGNED;
-    } else if(this.functionality.state == FunctionalityState.SPECIFIED ) {
+    } else if(this.functionality.state == FunctionalityState.ASSIGNED ) {
       if(!this.specification.id || !this.usecase.id) {
         this.snackBar.open('You have to create specification and use case in order to proceed!', 'close', {
           duration: 5000
@@ -106,7 +118,7 @@ export class FunctionalityDetailsComponent implements OnInit, OnDestroy {
         return;
       }
       this.functionality.state = FunctionalityState.SPECIFIED;
-    } else if(this.functionality.state == FunctionalityState.ASSIGNED ) {
+    } else if(this.functionality.state == FunctionalityState.SPECIFIED ) {
       this.functionality.state = FunctionalityState.IN_DEVELOPMENT;
     } else if(this.functionality.state == FunctionalityState.IN_DEVELOPMENT ) {
       this.functionality.state = FunctionalityState.IN_TESTING;
@@ -203,6 +215,34 @@ export class FunctionalityDetailsComponent implements OnInit, OnDestroy {
     teststep.testResult = TestCaseState.FAILED;
     this.functionalityService.saveTestStep(teststep).subscribe(result => {
     }, error => console.error(error));
+  }
+
+  shouldBeAbleToPromote() {
+    if(this.functionality.state == FunctionalityState.NEW && this.isProjectManager) {
+      return true;
+    }
+    if(this.functionality.state == FunctionalityState.ASSIGNED && this.isArchitect) {
+      return true;
+    }
+    if(this.functionality.state == FunctionalityState.SPECIFIED && this.isDeveloper) {
+      return true;
+    }
+    if(this.functionality.state == FunctionalityState.IN_DEVELOPMENT && this.isDeveloper) {
+      return true;
+    }
+    if(this.functionality.state == FunctionalityState.IN_TESTING && this.isTester) {
+      return true;
+    }
+    if(this.functionality.state == FunctionalityState.UNDER_REVIEW && this.isArchitect) {
+      return true;
+    }
+    if(this.functionality.state == FunctionalityState.VALIDATED && this.isArchitect) {
+      return true;
+    }
+    if(this.functionality.state == FunctionalityState.COMPLETED) {
+      return false;
+    }
+    return false;
   }
 
 }
